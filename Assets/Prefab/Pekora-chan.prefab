@@ -159,7 +159,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 241824509622707905}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 23244205bd65ba8449206f42f4f01724, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -185,7 +185,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 241824509622707905}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 23244205bd65ba8449206f42f4f01724, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -211,7 +211,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &241824509622707904
 MonoBehaviour:
@@ -225,12 +225,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc92b7fc63ae434394e91a87cc17e2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 400
+  m_JumpForce: 600
+  m_JumpCooldown: 0.2
   m_MovementSmoothing: 0.05
   m_AirControl: 0
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1
   m_GroundCheck: {fileID: 241824509326941247}
   m_CeilingCheck: {fileID: 241824509424994241}
 --- !u!114 &241824509622707915
@@ -245,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556ece414ec10864580c6f92d48b2bc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 40
+  moveSpeed: 22
 --- !u!95 &241824509622707913
 Animator:
   serializedVersion: 3
