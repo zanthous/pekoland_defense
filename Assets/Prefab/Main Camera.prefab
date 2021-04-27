@@ -98,5 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   smoothSpeed: 0.08
-  goLeftWithoutMovingCameraAmount: 0.2
-  defaultCameraHeight: 1.8
+  leftBuffer: 3.5
+  upBuffer: 0.72
+  defaultCameraHeight: 2.88
+  showDebug: 1

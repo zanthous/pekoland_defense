@@ -12,14 +12,18 @@ public class CameraFollow : MonoBehaviour
 	[SerializeField] private float smoothSpeed = 0.08f;
 
 	//wish I had a better name for this one
-	[Tooltip("example: 0.3 would represent 30% of the left half of the screen")]
-	[SerializeField] private float goLeftWithoutMovingCameraAmount = 0.2f;
+	[Tooltip("How far can the player backtrack leftward without moving the camera?")]
+	[SerializeField] private float leftBuffer = 3.0f;
+	[Tooltip("How far can the player move upward without moving the camera relative to the camera? - some is necessary so jump doesn't move it")]
+	[SerializeField] private float upBuffer = 2.0f;
 	[Tooltip("default number of units above player's center the camera should follow from")]
 	[SerializeField] private float defaultCameraHeight = 1.8f;
+	
+	[SerializeField] private bool showDebug = false;
 
 	private float width;
 	private float height;
-
+		
 	private void Start()
     {
 		Camera cam = Camera.main;
@@ -30,7 +34,7 @@ public class CameraFollow : MonoBehaviour
     void FixedUpdate()
 	{
 		Vector2 desiredPosition = transform.position;
-		var leftThresholdPoint = transform.position.x - ((width / 2.0f) * goLeftWithoutMovingCameraAmount);
+		var leftThresholdPoint = transform.position.x - leftBuffer;
 		//Smooth follow on the x axis if past center of screen, or a specified amount to the left
 		if(target.transform.position.x > transform.position.x)
 		{
@@ -42,9 +46,9 @@ public class CameraFollow : MonoBehaviour
 			desiredPosition.x = transform.position.x - (leftThresholdPoint - target.transform.position.x);
 		}
 		//Smooth follow on the y axis if moved up more than a jump's height approximately, and down if below initial height
-		if(target.transform.position.y > transform.position.y)
+		if(target.transform.position.y > transform.position.y + upBuffer)
         {
-			desiredPosition.y = target.transform.position.y;
+			desiredPosition.y = target.transform.position.y + upBuffer;
         }
 		if(target.transform.position.y < transform.position.y - defaultCameraHeight)
         {
@@ -53,5 +57,24 @@ public class CameraFollow : MonoBehaviour
 		Vector2 smoothedPosition = Vector2.Lerp(transform.position, desiredPosition, smoothSpeed);
 		transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y,-10);
 	}
+
+	//Debug tool to show borders where the player can move without having the camera adjust
+    private void OnDrawGizmosSelected()
+    {
+		if(showDebug)
+		{
+			Camera cam = Camera.main;
+			height = 2f * cam.orthographicSize;
+			width = height * cam.aspect;
+
+			var leftThresholdPoint = transform.position.x - leftBuffer;
+
+			Gizmos.DrawLine(new Vector3(leftThresholdPoint, -10, 0), new Vector3(leftThresholdPoint, 10, 0));
+			Gizmos.DrawLine(new Vector3(transform.position.x, -10, 0), new Vector3(transform.position.x, 10, 0));
+
+			Gizmos.DrawLine(new Vector3(-20, transform.position.y + upBuffer, 0), new Vector3(20, transform.position.y + upBuffer, 0));
+			Gizmos.DrawLine(new Vector3(-20, transform.position.y - defaultCameraHeight, 0), new Vector3(20, transform.position.y - defaultCameraHeight, 0));
+		}
+    }
 
 }
