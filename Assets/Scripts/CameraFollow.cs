@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+	enum CameraState
+    {
+		normal,
+		cutscene
+    }
 
 	[SerializeField] private Transform target;
 	[SerializeField] private float smoothSpeed = 0.08f;
@@ -25,15 +30,16 @@ public class CameraFollow : MonoBehaviour
     void FixedUpdate()
 	{
 		Vector2 desiredPosition = transform.position;
-		var leftThreshold = transform.position.x - ((width / 2.0f) * goLeftWithoutMovingCameraAmount);
+		var leftThresholdPoint = transform.position.x - ((width / 2.0f) * goLeftWithoutMovingCameraAmount);
 		//Smooth follow on the x axis if past center of screen, or a specified amount to the left
 		if(target.transform.position.x > transform.position.x)
 		{
 			desiredPosition.x = target.transform.position.x;
 		}
-		else if(target.transform.position.x < leftThreshold)
+		else if(target.transform.position.x < leftThresholdPoint)
 		{
-			desiredPosition.x = transform.position.x - (leftThreshold - target.transform.position.x);
+			//desired position is current camera position - (the distance player is past left threshold)
+			desiredPosition.x = transform.position.x - (leftThresholdPoint - target.transform.position.x);
 		}
 		//Smooth follow on the y axis if moved up more than a jump's height approximately, and down if below initial height
 		if(target.transform.position.y > transform.position.y)
