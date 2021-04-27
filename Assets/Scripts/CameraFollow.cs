@@ -68,11 +68,11 @@ public class CameraFollow : MonoBehaviour
 		//Smooth follow on the y axis if moved up more than a jump's height approximately, and down if below initial height
 		if(target.transform.position.y > transform.position.y + upBuffer)
         {
-			desiredPosition.y = target.transform.position.y + upBuffer;
+			desiredPosition.y = target.transform.position.y;
         }
 		if(target.transform.position.y < transform.position.y - defaultCameraHeight)
         {
-			desiredPosition.y = transform.position.y - defaultCameraHeight;
+			desiredPosition.y = target.transform.position.y;
 		}
 		Vector2 smoothedPosition = Vector2.Lerp(transform.position, desiredPosition, smoothSpeed);
 		transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y,-10);
@@ -131,9 +131,13 @@ public class CameraFollow : MonoBehaviour
 
             var leftThresholdPoint = transform.position.x - leftBuffer;
 
-            Gizmos.DrawLine(new Vector3(leftThresholdPoint, -10, 0), new Vector3(leftThresholdPoint, 10, 0));
-            Gizmos.DrawLine(new Vector3(transform.position.x, -10, 0), new Vector3(transform.position.x, 10, 0));
+			//vertical lines
+            Gizmos.DrawLine(new Vector3(leftThresholdPoint, -10 + transform.position.y, 0), 
+				new Vector3(leftThresholdPoint, 10 + transform.position.y, 0));
+            Gizmos.DrawLine(new Vector3(transform.position.x, -10 + transform.position.y, 0), 
+				new Vector3(transform.position.x, 10 + transform.position.y, 0));
 
+			//horizontal lines
             Gizmos.DrawLine(new Vector3(-20 + transform.position.x, transform.position.y + upBuffer, 0), 
 				new Vector3(20 + transform.position.x, transform.position.y + upBuffer, 0));
             Gizmos.DrawLine(new Vector3(-20 + transform.position.x, transform.position.y - defaultCameraHeight, 0), 
