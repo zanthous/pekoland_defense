@@ -101,4 +101,5 @@ MonoBehaviour:
   leftBuffer: 3.5
   upBuffer: 0.72
   defaultCameraHeight: 2.88
+  zoomChangeDuration: 1
   showDebug: 1

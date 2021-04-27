@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 241824509622707913}
   m_Layer: 0
   m_Name: Pekora-chan
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

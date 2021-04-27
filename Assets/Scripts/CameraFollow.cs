@@ -1,4 +1,14 @@
+using System;
+using System.Collections;
 using UnityEngine;
+
+public enum CameraZoomLevel
+{
+	normal,
+	far,
+	farther,
+	farthest
+}
 
 public class CameraFollow : MonoBehaviour
 {
@@ -7,6 +17,8 @@ public class CameraFollow : MonoBehaviour
 		normal,
 		cutscene
     }
+
+	public static Action<CameraZoomLevel> ChangeCameraZoom;
 
 	[SerializeField] private Transform target;
 	[SerializeField] private float smoothSpeed = 0.08f;
@@ -18,17 +30,23 @@ public class CameraFollow : MonoBehaviour
 	[SerializeField] private float upBuffer = 2.0f;
 	[Tooltip("default number of units above player's center the camera should follow from")]
 	[SerializeField] private float defaultCameraHeight = 1.8f;
+
+	[SerializeField] private float zoomChangeDuration = 3.0f;
 	
 	[SerializeField] private bool showDebug = false;
 
 	private float width;
 	private float height;
+
+	private Camera camera;
 		
 	private void Start()
     {
-		Camera cam = Camera.main;
-		height = 2f * cam.orthographicSize;
-		width = height * cam.aspect;
+		camera = Camera.main;
+		height = 2f * camera.orthographicSize;
+		width = height * camera.aspect;
+
+		ChangeCameraZoom += OnChangeCameraZoom;
 	}
 
     void FixedUpdate()
@@ -58,7 +76,40 @@ public class CameraFollow : MonoBehaviour
 		transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y,-10);
 	}
 
-	//Debug tool to show borders where the player can move without having the camera adjust
+	void OnChangeCameraZoom(CameraZoomLevel zoomLevel)
+	{
+		switch(zoomLevel)
+		{
+			case CameraZoomLevel.normal:
+				StartCoroutine(SmoothCameraZoomChange(5));
+				break;
+			case CameraZoomLevel.far:
+				StartCoroutine(SmoothCameraZoomChange(6));
+				break;
+			case CameraZoomLevel.farther:
+				StartCoroutine(SmoothCameraZoomChange(7));
+				break;
+			case CameraZoomLevel.farthest:
+				StartCoroutine(SmoothCameraZoomChange(8));
+				break;
+		}
+	}
+
+	private IEnumerator SmoothCameraZoomChange(int newZoomLevel)
+    {
+		float timer = 0.0f;
+		bool greater = newZoomLevel > camera.orthographicSize;
+		while( (greater && (camera.orthographicSize < newZoomLevel))  || (!greater && (camera.orthographicSize > newZoomLevel)) )
+		{
+			timer += Time.deltaTime;
+
+			camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, (float) newZoomLevel, timer / zoomChangeDuration);
+			 
+			yield return null;
+		}
+    }
+
+        //Debug tool to show borders where the player can move without having the camera adjust
     private void OnDrawGizmosSelected()
     {
 		if(showDebug)
@@ -76,5 +127,4 @@ public class CameraFollow : MonoBehaviour
 			Gizmos.DrawLine(new Vector3(-20, transform.position.y - defaultCameraHeight, 0), new Vector3(20, transform.position.y - defaultCameraHeight, 0));
 		}
     }
-
 }
