@@ -1068,7 +1068,7 @@ GameObject:
   - component: {fileID: 886174984}
   - component: {fileID: 886174983}
   - component: {fileID: 886174982}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CameraZoomChangeZone (2)
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 1314509549}
   - component: {fileID: 1314509548}
   - component: {fileID: 1314509547}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CameraZoomChangeZone (1)
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -1646,7 +1646,7 @@ GameObject:
   - component: {fileID: 2022928206}
   - component: {fileID: 2022928205}
   - component: {fileID: 2022928204}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CameraZoomChangeZone (3)
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -1778,10 +1778,6 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 638256103}
-    - target: {fileID: 5792210086873569603, guid: db54b7945dec77d43a03a535728b2971, type: 3}
-      propertyPath: zoomChangeDuration
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5792210086873569725, guid: db54b7945dec77d43a03a535728b2971, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1792,7 +1788,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5792210086873569725, guid: db54b7945dec77d43a03a535728b2971, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.07
+      value: -1.61
       objectReference: {fileID: 0}
     - target: {fileID: 5792210086873569725, guid: db54b7945dec77d43a03a535728b2971, type: 3}
       propertyPath: m_LocalPosition.z

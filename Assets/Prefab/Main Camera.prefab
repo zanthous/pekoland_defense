@@ -99,7 +99,7 @@ MonoBehaviour:
   target: {fileID: 0}
   smoothSpeed: 0.08
   leftBuffer: 3.5
-  upBuffer: 0.72
-  defaultCameraHeight: 2.88
-  zoomChangeDuration: 1
+  upBuffer: 1.12
+  defaultCameraHeight: 1.75
+  zoomChangeDuration: 2
   showDebug: 1

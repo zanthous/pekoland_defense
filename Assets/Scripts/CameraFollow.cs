@@ -39,6 +39,8 @@ public class CameraFollow : MonoBehaviour
 	private float height;
 
 	private Camera camera;
+
+	private bool cameraZoomTransition = false;
 		
 	private void Start()
     {
@@ -78,6 +80,8 @@ public class CameraFollow : MonoBehaviour
 
 	void OnChangeCameraZoom(CameraZoomLevel zoomLevel)
 	{
+		if(cameraZoomTransition)
+			return;
 		switch(zoomLevel)
 		{
 			case CameraZoomLevel.normal:
@@ -97,34 +101,43 @@ public class CameraFollow : MonoBehaviour
 
 	private IEnumerator SmoothCameraZoomChange(int newZoomLevel)
     {
+		cameraZoomTransition = true;
+
 		float timer = 0.0f;
 		bool greater = newZoomLevel > camera.orthographicSize;
+		float initialSize = camera.orthographicSize;
+
 		while( (greater && (camera.orthographicSize < newZoomLevel))  || (!greater && (camera.orthographicSize > newZoomLevel)) )
 		{
 			timer += Time.deltaTime;
-
-			camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, (float) newZoomLevel, timer / zoomChangeDuration);
+		
+			camera.orthographicSize = Mathf.Lerp(initialSize, (float) newZoomLevel, (timer / zoomChangeDuration));
 			 
 			yield return null;
 		}
-    }
 
-        //Debug tool to show borders where the player can move without having the camera adjust
+		cameraZoomTransition = false;
+	}
+
+    //Debug tool to show borders where the player can move without having the camera adjust
     private void OnDrawGizmosSelected()
     {
-		if(showDebug)
-		{
-			Camera cam = Camera.main;
-			height = 2f * cam.orthographicSize;
-			width = height * cam.aspect;
 
-			var leftThresholdPoint = transform.position.x - leftBuffer;
+        if(showDebug)
+        {
+            Camera cam = Camera.main;
+            height = 2f * cam.orthographicSize;
+            width = height * cam.aspect;
 
-			Gizmos.DrawLine(new Vector3(leftThresholdPoint, -10, 0), new Vector3(leftThresholdPoint, 10, 0));
-			Gizmos.DrawLine(new Vector3(transform.position.x, -10, 0), new Vector3(transform.position.x, 10, 0));
+            var leftThresholdPoint = transform.position.x - leftBuffer;
 
-			Gizmos.DrawLine(new Vector3(-20, transform.position.y + upBuffer, 0), new Vector3(20, transform.position.y + upBuffer, 0));
-			Gizmos.DrawLine(new Vector3(-20, transform.position.y - defaultCameraHeight, 0), new Vector3(20, transform.position.y - defaultCameraHeight, 0));
-		}
+            Gizmos.DrawLine(new Vector3(leftThresholdPoint, -10, 0), new Vector3(leftThresholdPoint, 10, 0));
+            Gizmos.DrawLine(new Vector3(transform.position.x, -10, 0), new Vector3(transform.position.x, 10, 0));
+
+            Gizmos.DrawLine(new Vector3(-20 + transform.position.x, transform.position.y + upBuffer, 0), 
+				new Vector3(20 + transform.position.x, transform.position.y + upBuffer, 0));
+            Gizmos.DrawLine(new Vector3(-20 + transform.position.x, transform.position.y - defaultCameraHeight, 0), 
+				new Vector3(20 + transform.position.x, transform.position.y - defaultCameraHeight, 0));
+        }
     }
 }
