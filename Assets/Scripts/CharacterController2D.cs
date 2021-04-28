@@ -87,7 +87,6 @@ public class CharacterController2D : MonoBehaviour
 		if(m_Grounded && jump && m_LastJumpTime > m_JumpCooldown)
 		{
 			// Add a vertical force to the player.
-			Debug.Log("Jumped");
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 			m_LastJumpTime = 0.0f;
