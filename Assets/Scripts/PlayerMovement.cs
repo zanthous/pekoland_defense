@@ -4,8 +4,9 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 40.0f;
 
-    private Animator animator; 
+    //private Animator animator; 
     private CharacterController2D controller;
+    private PlayerAnimationController animationController;
 
     private float horizontalMove = 0.0f;
     private bool jump = false;
@@ -14,8 +15,8 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController2D>();
-        animator = GetComponent<Animator>();
-        CharacterController2D.OnLandEvent += OnLand;
+        animationController = GetComponent<PlayerAnimationController>();
+        //CharacterController2D.OnLandEvent += OnLand;
     }
 
     void Update()
@@ -24,18 +25,18 @@ public class PlayerMovement : MonoBehaviour
 
         jump = Input.GetKey(KeyCode.Space);
 
-        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        animationController.Speed = Mathf.Abs(horizontalMove);
 
         if(jump)
         {
-            animator.SetBool("Jumping", true);
+            animationController.Jumping = true;
         }
     }
 
-    private void OnLand()
-    {
-        animator.SetBool("Jumping", false);
-    }
+    //private void OnLand()
+    //{
+    //    animationController.Jumping = false;
+    //}
 
     // Update is called once per frame
     void FixedUpdate()

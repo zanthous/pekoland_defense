@@ -1,7 +1,22 @@
 fileFormatVersion: 2
-guid: 2ae3899b8f404b84cabc7bc951bce556
+guid: 6b71382c91fbe4b47b1ace62565e7133
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2888061470167425527
+    second: pekora_air_attack_left_0
+  - first:
+      213: 31983095031820746
+    second: pekora_air_attack_left_1
+  - first:
+      213: -3468471363847799230
+    second: pekora_air_attack_left_2
+  - first:
+      213: -7272932372400657629
+    second: pekora_air_attack_left_3
+  - first:
+      213: 4245683950592058519
+    second: pekora_air_attack_left_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -32,12 +47,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -100
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -125,11 +140,116 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: pekora_air_attack_left_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 34
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f162d20b94741820800000000000000
+      internalID: 2888061470167425527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekora_air_attack_left_1
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 0
+        width: 52
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac1703a9470a17000800000000000000
+      internalID: 31983095031820746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekora_air_attack_left_2
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 0
+        width: 48
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24ebc3cdba38ddfc0800000000000000
+      internalID: -3468471363847799230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekora_air_attack_left_3
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 0
+        width: 46
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32bae9b7a8a511b90800000000000000
+      internalID: -7272932372400657629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekora_air_attack_left_4
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 0
+        width: 42
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 794ed97fe03bbea30800000000000000
+      internalID: 4245683950592058519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 

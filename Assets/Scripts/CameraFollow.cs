@@ -51,7 +51,9 @@ public class CameraFollow : MonoBehaviour
 		ChangeCameraZoom += OnChangeCameraZoom;
 	}
 
-    void FixedUpdate()
+	//"LateUpdate is called after all Update functions have been called. This is useful to order script execution.
+	//For example a follow camera should always be implemented in LateUpdate because it tracks objects that might have moved inside Update."
+    void LateUpdate()
 	{
 		Vector2 desiredPosition = transform.position;
 		var leftThresholdPoint = transform.position.x - leftBuffer;
