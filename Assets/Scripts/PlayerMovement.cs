@@ -10,12 +10,16 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalMove = 0.0f;
     private bool jump = false;
     
+    public static int health;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController2D>();
         animator = GetComponent<Animator>();
         CharacterController2D.OnLandEvent += OnLand;
+
+        PlayerMovement.health = 1;
     }
 
     void Update()

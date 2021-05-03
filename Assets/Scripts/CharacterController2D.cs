@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 //https://github.com/Brackeys/2D-Character-Controller
 public class CharacterController2D : MonoBehaviour
@@ -102,5 +103,13 @@ public class CharacterController2D : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		// if collided with enemy, reduce HP by 1. TODO: implement damaged animation, knock back, and invincibility, implement response to death
+		if (col.gameObject.tag.Equals("Enemy")) {
+			PlayerMovement.health -= 1;
+			Debug.Log(PlayerMovement.health);
+		}
 	}
 }
