@@ -51,7 +51,7 @@ public class SlimeMovements : MonoBehaviour
 
         // if it's still in cooldown, do not go through AI decisions
         if (this.cooldown > 0f) {
-            this.cooldown -= Time.deltaTime * 1000;
+            this.cooldown -= Time.fixedDeltaTime * 1000;
             return;
         }
 
@@ -68,7 +68,6 @@ public class SlimeMovements : MonoBehaviour
             switch (rand) {
                 // stay still
                 case 0:
-
                     Move(0, true);
                     this.cooldown = Random.Range(minCooldown, maxCooldown);
                     return;
@@ -103,7 +102,7 @@ public class SlimeMovements : MonoBehaviour
         if (groundInfoEdge.collider == null) {
             this.targetSpeed = 0;
         } else if (targetUpdate) {
-            this.targetSpeed = targetSpeed * this.direction * Time.deltaTime;
+            this.targetSpeed = targetSpeed * this.direction * Time.fixedDeltaTime;
         }
 
         // Move the character by finding the target velocity
@@ -121,6 +120,7 @@ public class SlimeMovements : MonoBehaviour
         }
     }
 
+    //Is this used?
     void Jump() {
         if (this.grounded) {
             // base
