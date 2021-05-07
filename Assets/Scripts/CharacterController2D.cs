@@ -27,7 +27,8 @@ public class CharacterController2D : MonoBehaviour
 	//[Header("Events")]
 	//[Space]
 
-	//public static Action OnLandEvent;
+	public static Action OnLandEvent;
+	public static Action OnJumpEvent;
 
 	//public BoolEvent OnCrouchEvent;
 	//private bool m_wasCrouching = false;
@@ -60,8 +61,8 @@ public class CharacterController2D : MonoBehaviour
 				if(!wasGrounded)
                 {
 					m_AnimationController.Jumping = false;
+					OnLandEvent?.Invoke();
 				}
-				//OnLandEvent.Invoke();
 			}
 		}
 	}
@@ -79,13 +80,11 @@ public class CharacterController2D : MonoBehaviour
 			// If the input is moving the player right and the player is facing left...
 			if(move > 0 && !m_FacingRight)
 			{
-				// ... flip the player.
 				Flip();
 			}
 			// Otherwise if the input is moving the player left and the player is facing right...
 			else if(move < 0 && m_FacingRight)
 			{
-				// ... flip the player.
 				Flip();
 			}
 		}
@@ -96,6 +95,7 @@ public class CharacterController2D : MonoBehaviour
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 			m_LastJumpTime = 0.0f;
+			OnJumpEvent?.Invoke();
 		}
 	}
 
@@ -109,4 +109,8 @@ public class CharacterController2D : MonoBehaviour
 		//theScale.x *= -1;
 		//transform.localScale = theScale;
 	}
+
+
+
+
 }

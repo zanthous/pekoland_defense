@@ -92,7 +92,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -104,7 +104,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,7 +116,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -128,7 +128,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -140,7 +140,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -154,9 +154,9 @@ TextureImporter:
       name: pekora_attack_right_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 34
+        width: 33
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -196,9 +196,9 @@ TextureImporter:
       name: pekora_attack_right_2
       rect:
         serializedVersion: 2
-        x: 162
+        x: 102
         y: 0
-        width: 47
+        width: 49
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -217,9 +217,9 @@ TextureImporter:
       name: pekora_attack_right_3
       rect:
         serializedVersion: 2
-        x: 224
+        x: 162
         y: 0
-        width: 43
+        width: 47
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -238,9 +238,9 @@ TextureImporter:
       name: pekora_attack_right_4
       rect:
         serializedVersion: 2
-        x: 290
+        x: 224
         y: 0
-        width: 36
+        width: 43
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -259,7 +259,7 @@ TextureImporter:
       name: pekora_attack_right_5
       rect:
         serializedVersion: 2
-        x: 348
+        x: 290
         y: 0
         width: 36
         height: 64
@@ -280,7 +280,7 @@ TextureImporter:
       name: pekora_attack_right_6
       rect:
         serializedVersion: 2
-        x: 406
+        x: 348
         y: 0
         width: 36
         height: 64
@@ -301,10 +301,10 @@ TextureImporter:
       name: pekora_attack_right_7
       rect:
         serializedVersion: 2
-        x: 102
-        y: 1
-        width: 49
-        height: 63
+        x: 406
+        y: 0
+        width: 36
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

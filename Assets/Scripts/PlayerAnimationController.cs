@@ -6,9 +6,6 @@ using UnityEngine;
 //decided to go the code route for simplicity
 public class PlayerAnimationController : MonoBehaviour
 {
-    private Animator animator;
-    private int currentState;
-
     //Use hashes to select animations faster apparently
     private static readonly int AirAttackLeft = Animator.StringToHash("Pekora_Air_Attack_Left");
     private static readonly int AirAttackRight = Animator.StringToHash("Pekora_Air_Attack_Right");
@@ -25,83 +22,191 @@ public class PlayerAnimationController : MonoBehaviour
     private static readonly int RunLeft = Animator.StringToHash("Pekora_Run_Left");
     private static readonly int RunRight = Animator.StringToHash("Pekora_Run_Right");
 
-    public float Speed { get; set; }
-    public bool FacingRight { get; set; } = true;
-    public bool Jumping { get; set; } = false;
-
+    private Animator animator;
+    private int currentState;
     //If jumping right transitions to jumping left, I want to continue the animation where it left off
     //This is probably not necessary if aircontrol is off, but I am leaving the option open
     private float lastTime = 0;
-
     //These animations should transition seemlessly, continuing from where the previous left off
-    private Dictionary<int, int> animationPairs = new Dictionary<int, int>();
+    private Dictionary<int, List<int>> smoothTransitions = new Dictionary<int, List<int>>();
+    private WeaponInfo currentWeaponInfo;
+    private bool attackStarting = false;
+    private Rigidbody2D rigidbody;
+    private float lastAttack = 0.0f;
+    private Coroutine stopAttackCoroutine;
+
+    public float Speed { get; set; }
+    public bool FacingRight { get; set; } = true;
+    public bool Jumping { get; set; } = false;
+    public bool Attacking { get; set; } = false;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+        rigidbody = GetComponent<Rigidbody2D>();
 
-        //I was thinking of making a bidirectional dictionary class but not bothering
-        animationPairs.Add(JumpLeft, JumpRight);
-        animationPairs.Add(JumpRight, JumpLeft);
+        smoothTransitions.Add(JumpLeft, new List<int>() { JumpRight });
+        smoothTransitions.Add(JumpRight, new List<int>() { JumpLeft });
 
-        animationPairs.Add(AirAttackLeft, AirAttackRight);
-        animationPairs.Add(AirAttackRight, AirAttackLeft);
+        smoothTransitions.Add(AirAttackLeft, new List<int>() { AirAttackRight, AttackLeft });
+        smoothTransitions.Add(AirAttackRight, new List<int>() { AirAttackLeft, AttackRight });
+
+        smoothTransitions.Add(AttackRight, new List<int>() { AirAttackRight, AttackLeft });
+        smoothTransitions.Add(AttackLeft, new List<int>() { AirAttackLeft, AttackRight });
+
+        PlayerMovement.Attack += OnAttack;
+        PlayerMovement.WeaponChanged += OnWeaponChanged;
+        //CharacterController2D.OnJumpEvent += OnJump;
+        //CharacterController2D.OnLandEvent += OnLand;
     }
 
-    void FixedUpdate()
+    private void OnWeaponChanged(WeaponInfo weaponInfo)
     {
-        if(Speed > 0.1f && !Jumping) 
+        currentWeaponInfo = weaponInfo;
+    }
+
+    private void OnAttack()
+    {
+        attackStarting = true;
+        Attacking = true;
+    }
+
+    private void OnLand() => Attacking = false;
+    private void OnJump()
+    {
+        Attacking = false;
+    }
+
+    void Update()
+    {
+        if(attackStarting)
         {
-            if(FacingRight)
+            int x = 0;
+        }
+
+        if(Speed > 0.1f && !Jumping) //on ground running
+        {
+            if(Attacking)
             {
-                ChangeAnimationState(RunRight);
+                if(FacingRight)
+                {
+                    ChangeAnimationState(AttackRight);
+                }
+                else //facing left
+                {
+                    ChangeAnimationState(AttackLeft);
+                }
             }
             else
             {
-                ChangeAnimationState(RunLeft);
+                if(FacingRight)
+                {
+                    ChangeAnimationState(RunRight);
+                }
+                else
+                {
+                    ChangeAnimationState(RunLeft);
+                }
             }
         }
-        else if(Jumping)
-        {
-            if(FacingRight)
+        else if(Jumping) //in air animations
+        { //todo check velocity
+            if(Attacking)
             {
-                ChangeAnimationState(JumpRight);
+                if(FacingRight)
+                {
+                    ChangeAnimationState(AirAttackRight);
+                }
+                else //facing left
+                {
+                    ChangeAnimationState(AirAttackLeft);
+                }
             }
-            else
+            else //not attacking
             {
-                ChangeAnimationState(JumpLeft);
+                //start at falling animation if character is falling (halfway through jump)
+                float delay = rigidbody.velocity.y < 0.0f ? 0.5f : 0.0f;
+                if(FacingRight)
+                {
+                    ChangeAnimationState(JumpRight, delay);
+                }
+                else //facing left
+                {
+                    ChangeAnimationState(JumpLeft, delay);
+                }
             }
         }
         else //not jumping, and not running on the ground
         {
-            if(FacingRight)
+            if(Attacking)
             {
-                ChangeAnimationState(IdleRight);
+                if(FacingRight)
+                {
+                    ChangeAnimationState(AttackRight);
+                }
+                else //facing left
+                {
+                    ChangeAnimationState(AttackLeft);
+                }
             }
-            else
+            else //not attacking
             {
-                ChangeAnimationState(IdleLeft);
+                if(FacingRight)
+                {
+                    ChangeAnimationState(IdleRight);
+                }
+                else //facing left
+                {
+                    ChangeAnimationState(IdleLeft);
+                }
+            }
+        }
+
+        if(attackStarting) //essentially set a timer to turn off attacking when the animation finishes
+        {
+            attackStarting = false;
+            lastAttack = Time.time;
+            //unity bug causing animator stateinfo not to update instantly, have to do something weird
+            if(stopAttackCoroutine == null)
+            {
+                stopAttackCoroutine = StartCoroutine(AttackComplete());
             }
         }
     }
 
-    private void ChangeAnimationState(int newStateHash)
+    IEnumerator AttackComplete()
+    {
+        //delay one frame because for some reason Animator.Play does not update the state instantly in the current version..
+        yield return null;
+        //wait for attack animation to end
+        while(Time.time < animator.GetCurrentAnimatorStateInfo(0).length + lastAttack)
+        {
+            yield return null;
+        }
+        Attacking = false;
+        stopAttackCoroutine = null;
+    }
+
+    //TODO smooth transitions between states of different time lengths. Blocked due to unity bug of stateinfo
+    //not updating after a new animation is played until a frame late
+    //because of this is "landing" part of the attack_right and attack_left animations have been temporarily removed
+    //so the animations have the same length. I submitted a bug report and will see if they respond
+    private void ChangeAnimationState(int newStateHash, float delay = 0.0f)
     {
         lastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         if(currentState == newStateHash) return;
 
         //Continue new animation from current time of last animation
-        if( animationPairs.ContainsKey(currentState) && animationPairs[currentState] == newStateHash)
+        if(smoothTransitions.ContainsKey(currentState) && smoothTransitions[currentState].Contains(newStateHash))
         {
-            animator.Play(newStateHash,0,lastTime);
+            animator.Play(newStateHash,0, lastTime);
         }
         else
         {
-            animator.Play(newStateHash);
+            animator.Play(newStateHash,0,delay);
         }
-
         currentState = newStateHash;
     }
 }
