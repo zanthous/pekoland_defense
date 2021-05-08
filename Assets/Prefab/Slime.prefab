@@ -110,12 +110,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EdgeDetection: {fileID: 7476896957922277055}
+  m_GroundCheck: {fileID: 5241808412610720702}
   FaceLeft: 1
   speed: 100
   minCooldown: 100
   maxCooldown: 1000
-  gravityScale: 0.0001
+  gravityScale: 1
   fps: 24
+  m_WhatIsGround:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!50 &-327139027264656810
 Rigidbody2D:
   serializedVersion: 4
@@ -131,7 +135,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 0
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -150,18 +154,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.25869125}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.9375, y: 1.5}
-    newSize: {x: 0.3, y: 0.48}
+    oldSize: {x: 0.9375, y: 1.03125}
+    newSize: {x: 0.9375, y: 1.03125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9375, y: 1.5}
+  m_Size: {x: 0.9375, y: 0.5209528}
   m_EdgeRadius: 0
 --- !u!212 &-2191354712803884482
 SpriteRenderer:
@@ -203,12 +207,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 146141184611520752, guid: e5b0984e022e6e6488535134e1ae634c, type: 3}
+  m_Sprite: {fileID: 7145080212453873207, guid: 8ca6ec7ce44acf2418983f5401e20e01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.3, y: 0.48}
+  m_Size: {x: 0.9375, y: 1.03125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

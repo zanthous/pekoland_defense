@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static Action<int> ChangeHealth;
+    public static Action PlayerDeath;
+
     [SerializeField] private float moveSpeed = 40.0f;
 
     private Animator animator; 
@@ -10,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalMove = 0.0f;
     private bool jump = false;
     
-    public static int health;
+    private int health = 1;
+    private const int MaxHealth = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -18,8 +23,14 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController2D>();
         animator = GetComponent<Animator>();
         CharacterController2D.OnLandEvent += OnLand;
+        ChangeHealth += OnChangeHealth;
+    }
 
-        PlayerMovement.health = 1;
+    //probably entirely unecessary
+    private void OnDestroy()
+    {
+        CharacterController2D.OnLandEvent -= OnLand;
+        ChangeHealth -= OnChangeHealth;
     }
 
     void Update()
@@ -45,5 +56,15 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime * moveSpeed, jump);
+    }
+
+    private void OnChangeHealth(int amount)
+    {
+        health += amount;
+        health = health > MaxHealth ? MaxHealth : health;
+        if(health < 0)
+        {
+            PlayerDeath?.Invoke();
+        }
     }
 }

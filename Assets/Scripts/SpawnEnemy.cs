@@ -7,10 +7,10 @@ public class SpawnEnemy : MonoBehaviour
     [SerializeField] private float minCooldown;
     [SerializeField] private float maxCooldown;
     [SerializeField] private GameObject enemy;
-    [Range(0f, 100f)] [SerializeField] private float spawnRate;
-    [SerializeField] private float minSpawnDistanceFromPlayer = 100;
-    [SerializeField] private float minX = 0f;
-    [SerializeField] private float maxX = 0f;
+    [Range(0f, 100f)] [SerializeField] private float spawnRate;             //Chance to spawn an enemy every check
+    [SerializeField] private float minSpawnDistanceFromPlayer = 1;
+    //[SerializeField] private float minX = 0f;
+    //[SerializeField] private float maxX = 0f;
 
     private float cooldown = 0f;
     private GameObject player;
@@ -21,7 +21,7 @@ public class SpawnEnemy : MonoBehaviour
     {
         // get player and main camera
         player = GameObject.FindGameObjectWithTag("Player");
-        camera = (Camera)GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     // Update is called once per frame
