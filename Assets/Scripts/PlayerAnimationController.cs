@@ -34,6 +34,7 @@ public class PlayerAnimationController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private float lastAttack = 0.0f;
     private Coroutine stopAttackCoroutine;
+    private AttackOrigin attackOrigin;
 
     public float Speed { get; set; }
     public bool FacingRight { get; set; } = true;
@@ -55,8 +56,8 @@ public class PlayerAnimationController : MonoBehaviour
         smoothTransitions.Add(AttackRight, new List<int>() { AirAttackRight, AttackLeft });
         smoothTransitions.Add(AttackLeft, new List<int>() { AirAttackLeft, AttackRight });
 
-        PlayerMovement.Attack += OnAttack;
-        PlayerMovement.WeaponChanged += OnWeaponChanged;
+        PlayerMovement.AttackEvent += OnAttack;
+        PlayerMovement.WeaponChangedEvent += OnWeaponChanged;
         //CharacterController2D.OnJumpEvent += OnJump;
         //CharacterController2D.OnLandEvent += OnLand;
     }
@@ -66,10 +67,11 @@ public class PlayerAnimationController : MonoBehaviour
         currentWeaponInfo = weaponInfo;
     }
 
-    private void OnAttack()
+    private void OnAttack(AttackOrigin origin)
     {
         attackStarting = true;
         Attacking = true;
+        attackOrigin = origin;
     }
 
     private void OnLand() => Attacking = false;

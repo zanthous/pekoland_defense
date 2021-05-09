@@ -134,7 +134,8 @@ GameObject:
   - component: {fileID: 526272801}
   - component: {fileID: 526272800}
   - component: {fileID: 526272799}
-  m_Layer: 0
+  - component: {fileID: 526272802}
+  m_Layer: 6
   m_Name: Open Sprite Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +217,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 55, y: -4, z: 0}
+    - position: {x: 55, y: -10, z: 0}
       leftTangent: {x: 0.1326294, y: 0.27227592, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
@@ -226,7 +227,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -5, y: -4, z: 0}
+    - position: {x: -5, y: -10, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -262,7 +263,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -299,8 +300,8 @@ SpriteShapeRenderer:
   m_Sprites:
   - {fileID: 21300000, guid: 74634d9e93f22ee49b4b43c7c45d42b9, type: 3}
   m_LocalAABB:
-    m_Center: {x: 24.928335, y: -1.7783017, z: -0.00005}
-    m_Extent: {x: 30.824522, y: 2.2216988, z: 0.00005}
+    m_Center: {x: 24.928335, y: -4.778302, z: -0.00005}
+    m_Extent: {x: 30.824522, y: 5.2216988, z: 0.00005}
 --- !u!4 &526272801
 Transform:
   m_ObjectHideFlags: 0
@@ -315,6 +316,77 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &526272802
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526272798}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -5.8024592, y: -1.1844906}
+      - {x: -4.460033, y: -0.93440014}
+      - {x: -3.4376247, y: -0.7701732}
+      - {x: -2.6170793, y: -0.6659675}
+      - {x: -1.9362394, y: -0.62339574}
+      - {x: 3.5117736, y: -0.8475172}
+      - {x: 4.6640368, y: -0.8995729}
+      - {x: 5.49238, y: -0.89919144}
+      - {x: 6.358016, y: -0.8680028}
+      - {x: 7.1064134, y: -0.8132346}
+      - {x: 7.5831337, y: -0.7420889}
+      - {x: 7.6550007, y: -0.7159538}
+      - {x: 8.109118, y: -0.47510186}
+      - {x: 8.524629, y: -0.29432282}
+      - {x: 8.905718, y: -0.16806659}
+      - {x: 9.256479, y: -0.09082818}
+      - {x: 9.58101, y: -0.05710283}
+      - {x: 9.883416, y: -0.061387494}
+      - {x: 10.167798, y: -0.09818256}
+      - {x: 10.438262, y: -0.16199198}
+      - {x: 10.698901, y: -0.24732089}
+      - {x: 11.725152, y: -0.6938989}
+      - {x: 11.998102, y: -0.8043582}
+      - {x: 12.285877, y: -0.9033594}
+      - {x: 13.025477, y: -0.9646141}
+      - {x: 14.698335, y: -1.0115782}
+      - {x: 17.248829, y: -1.0464238}
+      - {x: 20.268866, y: -1.0686756}
+      - {x: 23.858122, y: -1.0817279}
+      - {x: 27.819132, y: -1.0864896}
+      - {x: 32.349304, y: -1.0837497}
+      - {x: 36.87947, y: -1.0751008}
+      - {x: 44.42972, y: -1.0511606}
+      - {x: 50.66534, y: -1.0239038}
+      - {x: 55, y: -1}
+      - {x: 55.02947, y: -3.2728276}
+      - {x: 55.05282, y: -5.840907}
+      - {x: 55.05895, y: -7.5456553}
+      - {x: 55.05093, y: -8.959446}
+      - {x: 55.03985, y: -9.480864}
+      - {x: 55.023106, y: -9.837896}
+      - {x: 55, y: -10}
+      - {x: -5, y: -10}
+      - {x: -5.062686, y: -1.4784327}
+      - {x: -5.065048, y: -1.1573148}
+      - {x: -5.8024592, y: -1.1844906}
 --- !u!1001 &626457099
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -326,21 +398,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pekora-chan
       objectReference: {fileID: 0}
-    - target: {fileID: 241824509622707915, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
-      propertyPath: currentWeaponInfo
-      value: 
-      objectReference: {fileID: 11400000, guid: 6456108fd8c370644ada079ebf425580, type: 2}
     - target: {fileID: 241824509622707916, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 241824509622707916, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.05
+      value: -7.13
       objectReference: {fileID: 0}
     - target: {fileID: 241824509622707916, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.56
+      value: -3.27
       objectReference: {fileID: 0}
     - target: {fileID: 241824509622707916, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
       propertyPath: m_LocalPosition.z
@@ -373,10 +441,6 @@ PrefabInstance:
     - target: {fileID: 241824509622707916, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 241824509622707917, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02e533dec486d5d4a9d6d2178d5aa501, type: 3}
@@ -467,7 +531,8 @@ GameObject:
   - component: {fileID: 2013927906}
   - component: {fileID: 2013927905}
   - component: {fileID: 2013927904}
-  m_Layer: 0
+  - component: {fileID: 2013927907}
+  m_Layer: 6
   m_Name: Open Sprite Shape (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +630,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -618,6 +683,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!68 &2013927907
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013927903}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0.31
+  m_Points:
+  - {x: -2.5472443, y: 0.83888954}
+  - {x: -0.9284172, y: 1.0266926}
+  - {x: -0.013318751, y: 1.1075466}
+  - {x: 0.6295542, y: 1.1295228}
+  - {x: 2.483419, y: 1.068812}
+  - {x: 2.063963, y: -3.068598}
+  - {x: -1.5996389, y: -2.9052756}
+  - {x: -1.7929482, y: 0.7438142}
+  - {x: -1.8002326, y: 0.88132274}
+  - {x: -2.5472443, y: 0.83888954}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1 &2022928203
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,7 +795,8 @@ GameObject:
   - component: {fileID: 2145667856}
   - component: {fileID: 2145667855}
   - component: {fileID: 2145667854}
-  m_Layer: 0
+  - component: {fileID: 2145667857}
+  m_Layer: 6
   m_Name: Open Sprite Shape (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -798,7 +894,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -851,6 +947,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!68 &2145667857
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145667853}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0.31
+  m_Points:
+  - {x: -2.5472443, y: 0.83888954}
+  - {x: -0.9284172, y: 1.0266926}
+  - {x: -0.013318751, y: 1.1075466}
+  - {x: 0.6295542, y: 1.1295228}
+  - {x: 2.483419, y: 1.068812}
+  - {x: 1.8900847, y: -1.8900845}
+  - {x: -1.7155582, y: -1.6108425}
+  - {x: -1.7985811, y: 0.806714}
+  - {x: -1.8017094, y: 0.89781475}
+  - {x: -2.5472443, y: 0.83888954}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1001 &5792210086705045821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -861,10 +987,6 @@ PrefabInstance:
     - target: {fileID: 5792210086873569601, guid: db54b7945dec77d43a03a535728b2971, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 5792210086873569601, guid: db54b7945dec77d43a03a535728b2971, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5792210086873569603, guid: db54b7945dec77d43a03a535728b2971, type: 3}
       propertyPath: target
