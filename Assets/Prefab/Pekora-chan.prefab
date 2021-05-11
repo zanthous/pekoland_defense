@@ -438,7 +438,7 @@ MonoBehaviour:
   daggerPrefab: {fileID: 8123087772811771689, guid: 76029709818f538449a23a132e936ee4, type: 3}
   terrainMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   downSpawn: {fileID: 1368984135}
   upSpawn: {fileID: 1978988380}
   leftSpawn: {fileID: 1213972982}
