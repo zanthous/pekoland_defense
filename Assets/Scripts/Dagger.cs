@@ -5,10 +5,10 @@ using UnityEngine;
 public class Dagger : MonoBehaviour
 {
     [SerializeField] private WeaponInfo weaponInfo;
-
     [SerializeField] private LayerMask collisions;
-    [SerializeField] private float speed = 12.0f;
+    [SerializeField] private float speed = 16.0f;
     [SerializeField] private float timeToLive = 3.0f;
+
     private float despawnTimer = 0.0f;
 
     // Update is called once per frame
@@ -24,6 +24,7 @@ public class Dagger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //TODO
         if(collision.CompareTag("Enemy"))
         {
             //collision.GetComponent<IHealth>().TakeDamage(weaponInfo.damage);

@@ -127,7 +127,7 @@ MonoBehaviour:
   collisions:
     serializedVersion: 2
     m_Bits: 115
-  speed: 12
+  speed: 16
   timeToLive: 3
 --- !u!50 &-5308020005461672810
 Rigidbody2D:

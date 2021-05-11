@@ -50,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
         animationController = GetComponent<PlayerAnimationController>();
         feetCollider = GetComponent<CircleCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
+        //manually apply gravity force
+        rigidbody.gravityScale = 0.0f;
 
         AttackEvent += OnAttack;
     }

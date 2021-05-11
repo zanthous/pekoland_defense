@@ -22,19 +22,19 @@ public class PlayerAnimationController : MonoBehaviour
     private static readonly int RunLeft = Animator.StringToHash("Pekora_Run_Left");
     private static readonly int RunRight = Animator.StringToHash("Pekora_Run_Right");
 
+    //These animations should transition seemlessly, continuing from where the previous left off
+    private Dictionary<int, List<int>> smoothTransitions = new Dictionary<int, List<int>>();
     private Animator animator;
+    private WeaponInfo currentWeaponInfo;
+    private Rigidbody2D rigidbody;
+    private Coroutine stopAttackCoroutine;
+    private AttackOrigin attackOrigin;
+    private bool attackStarting = false;
+    private float lastAttack = 0.0f;
     private int currentState;
     //If jumping right transitions to jumping left, I want to continue the animation where it left off
     //This is probably not necessary if aircontrol is off, but I am leaving the option open
     private float lastTime = 0;
-    //These animations should transition seemlessly, continuing from where the previous left off
-    private Dictionary<int, List<int>> smoothTransitions = new Dictionary<int, List<int>>();
-    private WeaponInfo currentWeaponInfo;
-    private bool attackStarting = false;
-    private Rigidbody2D rigidbody;
-    private float lastAttack = 0.0f;
-    private Coroutine stopAttackCoroutine;
-    private AttackOrigin attackOrigin;
 
     public float Speed { get; set; }
     public bool FacingRight { get; set; } = true;
@@ -58,8 +58,6 @@ public class PlayerAnimationController : MonoBehaviour
 
         PlayerMovement.AttackEvent += OnAttack;
         PlayerMovement.WeaponChangedEvent += OnWeaponChanged;
-        //CharacterController2D.OnJumpEvent += OnJump;
-        //CharacterController2D.OnLandEvent += OnLand;
     }
 
     private void OnWeaponChanged(WeaponInfo weaponInfo)
@@ -74,19 +72,8 @@ public class PlayerAnimationController : MonoBehaviour
         attackOrigin = origin;
     }
 
-    private void OnLand() => Attacking = false;
-    private void OnJump()
-    {
-        Attacking = false;
-    }
-
     void Update()
     {
-        if(attackStarting)
-        {
-            int x = 0;
-        }
-
         if(Speed > 0.1f && !Jumping) //on ground running
         {
             if(Attacking)

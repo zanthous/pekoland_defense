@@ -25,13 +25,9 @@ public class CharacterController2D : MonoBehaviour
 	private float m_LastJumpTime = float.MaxValue;
 	private bool m_Crouching = false;
 
-
 	public bool FacingRight { get { return m_FacingRight; } }
 	public bool Grounded { get { return m_Grounded; } }
 	public bool Crouch { get { return m_Crouching; } }
-
-	//[Header("Events")]
-	//[Space]
 
 	public static Action OnLandEvent;
 	public static Action OnJumpEvent;
