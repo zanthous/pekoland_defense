@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public static Action<WeaponInfo> WeaponChangedEvent;
     public static Action<AttackOrigin> AttackEvent;
+    public static Action<int> ChangeHealth;
+    public static Action PlayerDeath;
 
     [SerializeField] private float moveSpeed = 40.0f;
     [SerializeField] private WeaponInfo currentWeaponInfo;
@@ -42,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
     private float aimThreshold = 0.1f; //How far in the y direction should you have to press to aim down/up?
     private Vector2 gravity;
     private float gravityScale = 3.0f;
+    
+    private int health = 1;
+    private const int MaxHealth = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -50,10 +55,20 @@ public class PlayerMovement : MonoBehaviour
         animationController = GetComponent<PlayerAnimationController>();
         feetCollider = GetComponent<CircleCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
+        
+        AttackEvent += OnAttack;
+        CharacterController2D.OnLandEvent += OnLand;
+        ChangeHealth += OnChangeHealth;
+        
         //manually apply gravity force
         rigidbody.gravityScale = 0.0f;
+    }
 
-        AttackEvent += OnAttack;
+    //probably entirely unecessary
+    private void OnDestroy()
+    {
+        CharacterController2D.OnLandEvent -= OnLand;
+        ChangeHealth -= OnChangeHealth;
     }
 
     void Update()
@@ -202,5 +217,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         projectile.GetComponent<BoxCollider2D>().enabled = true;
+    }
+    
+    private void OnChangeHealth(int amount)
+    {
+        health += amount;
+        health = health > MaxHealth ? MaxHealth : health;
+        if(health < 0)
+        {
+            PlayerDeath?.Invoke();
+        }
     }
 }
