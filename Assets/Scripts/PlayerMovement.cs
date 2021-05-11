@@ -57,7 +57,6 @@ public class PlayerMovement : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         
         AttackEvent += OnAttack;
-        CharacterController2D.OnLandEvent += OnLand;
         ChangeHealth += OnChangeHealth;
         
         //manually apply gravity force
@@ -67,7 +66,6 @@ public class PlayerMovement : MonoBehaviour
     //probably entirely unecessary
     private void OnDestroy()
     {
-        CharacterController2D.OnLandEvent -= OnLand;
         ChangeHealth -= OnChangeHealth;
     }
 
