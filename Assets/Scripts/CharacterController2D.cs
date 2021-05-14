@@ -14,8 +14,9 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
-	//[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
+																				//[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 
+	private PlayerAnimationController m_AnimationController;
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
@@ -23,11 +24,14 @@ public class CharacterController2D : MonoBehaviour
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
 	private float m_LastJumpTime = float.MaxValue;
+	private bool m_Crouching = false;
 
-	[Header("Events")]
-	[Space]
+	public bool FacingRight { get { return m_FacingRight; } }
+	public bool Grounded { get { return m_Grounded; } }
+	public bool Crouch { get { return m_Crouching; } }
 
 	public static Action OnLandEvent;
+	public static Action OnJumpEvent;
 
 	//public BoolEvent OnCrouchEvent;
 	//private bool m_wasCrouching = false;
@@ -35,6 +39,8 @@ public class CharacterController2D : MonoBehaviour
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		m_AnimationController = GetComponent<PlayerAnimationController>();
+		m_AnimationController.FacingRight = m_FacingRight;
 	}
 
 	private void Update()
@@ -56,7 +62,10 @@ public class CharacterController2D : MonoBehaviour
 			{
 				m_Grounded = true;
 				if(!wasGrounded)
-					OnLandEvent.Invoke();
+                {
+					m_AnimationController.Jumping = false;
+					OnLandEvent?.Invoke();
+				}
 			}
 		}
 	}
@@ -74,13 +83,11 @@ public class CharacterController2D : MonoBehaviour
 			// If the input is moving the player right and the player is facing left...
 			if(move > 0 && !m_FacingRight)
 			{
-				// ... flip the player.
 				Flip();
 			}
 			// Otherwise if the input is moving the player left and the player is facing right...
 			else if(move < 0 && m_FacingRight)
 			{
-				// ... flip the player.
 				Flip();
 			}
 		}
@@ -91,6 +98,7 @@ public class CharacterController2D : MonoBehaviour
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 			m_LastJumpTime = 0.0f;
+			OnJumpEvent?.Invoke();
 		}
 	}
 
@@ -98,13 +106,13 @@ public class CharacterController2D : MonoBehaviour
 	{
 		// Switch the way the player is labelled as facing.
 		m_FacingRight = !m_FacingRight;
-
+		m_AnimationController.FacingRight = m_FacingRight;
 		// Multiply the player's x local scale by -1.
-		Vector3 theScale = transform.localScale;
-		theScale.x *= -1;
-		transform.localScale = theScale;
+		//Vector3 theScale = transform.localScale;
+		//theScale.x *= -1;
+		//transform.localScale = theScale;
 	}
-
+  
 	void OnCollisionEnter2D(Collision2D col) {
 		// if collided with enemy, reduce HP by 1. TODO: implement damaged animation, knock back, and invincibility, implement response to death
 		if (col.gameObject.CompareTag("Enemy")) {
