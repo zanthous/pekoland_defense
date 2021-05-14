@@ -23,16 +23,16 @@ public class CameraFollow : MonoBehaviour
 	[SerializeField] private Transform target;
 	[SerializeField] private float smoothSpeed = 0.08f;
 
-	//wish I had a better name for this one
 	[Tooltip("How far can the player backtrack leftward without moving the camera?")]
 	[SerializeField] private float leftBuffer = 3.0f;
+
 	[Tooltip("How far can the player move upward without moving the camera relative to the camera? - some is necessary so jump doesn't move it")]
 	[SerializeField] private float upBuffer = 2.0f;
+
 	[Tooltip("default number of units above player's center the camera should follow from")]
 	[SerializeField] private float defaultCameraHeight = 1.8f;
 
 	[SerializeField] private float zoomChangeDuration = 3.0f;
-	
 	[SerializeField] private bool showDebug = false;
 
 	private float width;
@@ -51,7 +51,9 @@ public class CameraFollow : MonoBehaviour
 		ChangeCameraZoom += OnChangeCameraZoom;
 	}
 
-    void FixedUpdate()
+	//"LateUpdate is called after all Update functions have been called. This is useful to order script execution.
+	//For example a follow camera should always be implemented in LateUpdate because it tracks objects that might have moved inside Update."
+    void LateUpdate()
 	{
 		Vector2 desiredPosition = transform.position;
 		var leftThresholdPoint = transform.position.x - leftBuffer;
