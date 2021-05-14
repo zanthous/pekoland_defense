@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: PekoGrassAndDirt
   m_EditorClassIdentifier: 
   m_Angles:
-  - m_Start: 12
-    m_End: 348
+  - m_Start: 60
+    m_End: 300
     m_Order: 0
     m_Sprites:
     - {fileID: 0}
-  - m_Start: -12
-    m_End: 12
+  - m_Start: -60
+    m_End: 59
     m_Order: 1
     m_Sprites:
     - {fileID: 21300000, guid: 74634d9e93f22ee49b4b43c7c45d42b9, type: 3}
