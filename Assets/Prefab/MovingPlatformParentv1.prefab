@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5804228298024107463}
   - component: {fileID: 5804228298024107456}
-  m_Layer: 0
-  m_Name: MovingPlatformParent
+  m_Layer: 6
+  m_Name: MovingPlatformParentv1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 5804228298444837145}
   - component: {fileID: 5804228298444837146}
   - component: {fileID: 5804228298444837147}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MovingPlatformCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,8 +171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5804228299620088213}
   - component: {fileID: 5804228299620088298}
-  - component: {fileID: 5804228299620088212}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MovingPlatformStickCollider
   m_TagString: MovingSurfaceCollider
   m_Icon: {fileID: 0}
@@ -219,15 +218,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5804228299620088212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5804228299620088214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c12cbe2c323e2a74084357863f4d172d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

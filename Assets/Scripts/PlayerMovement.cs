@@ -233,18 +233,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
+    void OnCollisionStay2D(Collision2D collider)
     {
-        if(coll.gameObject.tag == "MovingSurfaceCollider")
+        if(Mathf.Abs(horizontalMove) < 0.001f &&  collider.transform.CompareTag("MovingSurfaceCollider"))
         {
-            currentMovingPlatform = coll.gameObject.transform;
+            currentMovingPlatform = collider.gameObject.transform;
             transform.SetParent(currentMovingPlatform);
         }
     }
 
-    void OnCollisionExit2D(Collision2D coll)
+    void OnCollisionExit2D(Collision2D collider)
     {
-        if(coll.gameObject.tag == "MovingSurfaceCollider")
+        if(collider.transform.CompareTag("MovingSurfaceCollider"))
         {
             currentMovingPlatform = null;
             transform.parent = null;
