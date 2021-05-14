@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jump = false;
     
     private int health = 1;
+    private Transform currentMovingPlatform;
     private const int MaxHealth = 3;
 
     // Start is called before the first frame update
@@ -41,6 +42,11 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
+        if(jump || Mathf.Abs(horizontalMove) > 0.001f)
+        {
+            transform.parent = null;
+        }
+
         if(jump)
         {
             animator.SetBool("Jumping", true);
@@ -66,5 +72,24 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerDeath?.Invoke();
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if(coll.gameObject.tag == "MovingSurfaceCollider")
+        {
+            currentMovingPlatform = coll.gameObject.transform;
+            transform.SetParent(currentMovingPlatform);
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D coll)
+    {
+        if(coll.gameObject.tag == "MovingSurfaceCollider")
+        {
+            currentMovingPlatform = null;
+            transform.parent = null;
+        }
+            
     }
 }
