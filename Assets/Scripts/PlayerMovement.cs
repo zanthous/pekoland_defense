@@ -83,11 +83,6 @@ public class PlayerMovement : MonoBehaviour
 
         animationController.Speed = Mathf.Abs(horizontalMove);
 
-        if(jump || Mathf.Abs(horizontalMove) > 0.001f)
-        {
-            transform.parent = null;
-        }
-
         if(jump)
         {
             animationController.Jumping = true;
@@ -233,9 +228,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void OnCollisionStay2D(Collision2D collider)
+    void OnCollisionEnter2D(Collision2D collider)
     {
-        if(Mathf.Abs(horizontalMove) < 0.001f &&  collider.transform.CompareTag("MovingSurfaceCollider"))
+        if(collider.transform.CompareTag("MovingSurfaceCollider"))
         {
             currentMovingPlatform = collider.gameObject.transform;
             transform.SetParent(currentMovingPlatform);

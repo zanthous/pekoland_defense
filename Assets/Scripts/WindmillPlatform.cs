@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class WindmillPlatform : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -11,8 +11,8 @@ public class MovingPlatform : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        this.transform.rotation = Quaternion.identity;
     }
 }

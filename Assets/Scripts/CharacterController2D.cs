@@ -94,7 +94,7 @@ public class CharacterController2D : MonoBehaviour
 		// If the player should jump...
 		if(m_Grounded && jump && m_LastJumpTime > m_JumpCooldown)
 		{
-			//Ensure all jumps are the same height by starting from 0.0f y velocity
+			//Ensure all jumps are the same height by starting from 0.0f y velocity, not working as expected currently
 			m_Rigidbody2D.velocity.Set(m_Rigidbody2D.velocity.x, 0.0f);
 			// Add a vertical force to the player.
 			m_Grounded = false;
