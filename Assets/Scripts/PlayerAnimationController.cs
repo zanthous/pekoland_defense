@@ -26,8 +26,8 @@ public class PlayerAnimationController : MonoBehaviour
     private Dictionary<int, List<int>> smoothTransitions = new Dictionary<int, List<int>>();
     private Animator animator;
     private WeaponInfo currentWeaponInfo;
-    private Rigidbody2D rigidbody;
     private Coroutine stopAttackCoroutine;
+    private PlayerMovement playerMovement;
     private AttackOrigin attackOrigin;
     private bool attackStarting = false;
     private float lastAttack = 0.0f;
@@ -45,7 +45,7 @@ public class PlayerAnimationController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        playerMovement = GetComponent<PlayerMovement>();
 
         smoothTransitions.Add(JumpLeft, new List<int>() { JumpRight });
         smoothTransitions.Add(JumpRight, new List<int>() { JumpLeft });
@@ -114,8 +114,9 @@ public class PlayerAnimationController : MonoBehaviour
             }
             else //not attacking
             {
+                //TODO replace
                 //start at falling animation if character is falling (halfway through jump)
-                float delay = rigidbody.velocity.y < 0.0f ? 0.5f : 0.0f;
+                float delay = playerMovement.Velocity.y < 0.0f ? 0.5f : 0.0f;
                 if(FacingRight)
                 {
                     ChangeAnimationState(JumpRight, delay);

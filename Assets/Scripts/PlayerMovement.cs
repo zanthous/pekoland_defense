@@ -11,7 +11,8 @@ public enum AttackOrigin
     Down
 }
 
-//I want to rename this to something else
+//[RequireComponent(typeof(Controller2D))]
+[RequireComponent(typeof(PlayerAnimationController))]
 public class PlayerMovement : MonoBehaviour
 {
     public static Action<WeaponInfo> WeaponChangedEvent;
@@ -19,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public static Action<int> ChangeHealth;
     public static Action PlayerDeath;
 
-    [SerializeField] private float moveSpeed = 40.0f;
+    [SerializeField] private float moveSpeed = 10.0f;
     [SerializeField] private WeaponInfo currentWeaponInfo;
     [SerializeField] private GameObject daggerPrefab;
     [SerializeField] private LayerMask terrainMask;
@@ -32,18 +33,29 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject rightSpawn;
     [SerializeField] private GameObject lowRightSpawn;
 
-    private CharacterController2D controller;
+    //private CharacterController2D controller;
+    private Controller2D controller;
     private PlayerAnimationController animationController;
-    private CircleCollider2D feetCollider;
-    private Rigidbody2D rigidbody;
     
     private float horizontalMove = 0.0f;
     private float verticalMove = 0.0f;
+
     private bool jump = false;
+    [SerializeField] private float timeToJumpApex = .4f;
+    [SerializeField] private float jumpHeight = 3.5f;
+
+    private float jumpVelocity;
+
     private float attackTimer = float.MaxValue;
     private float aimThreshold = 0.1f; //How far in the y direction should you have to press to aim down/up?
-    private Vector2 gravity;
-    private float gravityScale = 3.0f;
+    //private Vector2 gravity;
+    //private float gravityScale = 3.0f;
+    private float gravity = -20.0f;
+    private Vector2 velocity;
+    public Vector2 Velocity
+    {
+        get { return velocity; }
+    }
     
     private int health = 1;
     private Transform currentMovingPlatform;
@@ -52,16 +64,15 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controller = GetComponent<CharacterController2D>();
+        //controller = GetComponent<CharacterController2D>();
         animationController = GetComponent<PlayerAnimationController>();
-        feetCollider = GetComponent<CircleCollider2D>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        controller = GetComponent<Controller2D>();
         
         AttackEvent += OnAttack;
         ChangeHealth += OnChangeHealth;
-        
-        //manually apply gravity force
-        rigidbody.gravityScale = 0.0f;
+
+        gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
     }
 
     //probably entirely unecessary
@@ -72,13 +83,31 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        attackTimer += Time.deltaTime;
+        if(controller.collisions.above || controller.collisions.below)
+        {
+            velocity.y = 0;
+        }
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
         verticalMove = Input.GetAxisRaw("Vertical");
-
         jump = Input.GetKey(KeyCode.Space);
 
+        if(jump && controller.collisions.below)
+        {
+            velocity.y = jumpVelocity;
+        }
+        else if( !jump && controller.collisions.below)
+        {
+            animationController.Jumping = false;
+        }
+
+        velocity.y += gravity * Time.deltaTime;
+        velocity.x = horizontalMove * moveSpeed;
+
+        attackTimer += Time.deltaTime;
+        
+        controller.Move(velocity * Time.deltaTime);
+        
         HandleAttack();
 
         animationController.Speed = Mathf.Abs(horizontalMove);
@@ -97,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
 
             AttackOrigin origin = AttackOrigin.Left;
 
-            if(controller.Grounded)
+            if(controller.collisions.below)
             {
                 if(controller.Crouch)
                 {
@@ -142,6 +171,7 @@ public class PlayerMovement : MonoBehaviour
                     origin = controller.FacingRight ? AttackOrigin.Right : AttackOrigin.Left;
                 }
             }
+
             AttackEvent?.Invoke(origin);
         }
     }
@@ -149,24 +179,24 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        AddGravity();
-        controller.Move(horizontalMove * Time.fixedDeltaTime * moveSpeed, jump);
+        //AddGravity();
+        //controller.Move(horizontalMove * Time.fixedDeltaTime * moveSpeed, jump);
     }
 
     //https://gamedev.stackexchange.com/questions/146738/how-to-disable-gravity-for-a-rigidbody-moving-on-a-slope/169102#169102
-    private void AddGravity()
-    {
-        if(controller.Grounded)
-        {
-            var hit = Physics2D.Raycast(transform.position, Vector2.down, -.4f, terrainMask);
-            gravity = -hit.normal * gravityScale;
-        }
-        else
-        {
-            gravity = Physics2D.gravity * gravityScale;
-        }
-        rigidbody.AddForce(gravity, ForceMode2D.Force);
-    }
+    //private void AddGravity()
+    //{
+    //    if(controller.Grounded)
+    //    {
+    //        var hit = Physics2D.Raycast(transform.position, Vector2.down, -.4f, terrainMask);
+    //        gravity = -hit.normal * gravityScale;
+    //    }
+    //    else
+    //    {
+    //        gravity = Physics2D.gravity * gravityScale;
+    //    }
+    //    //rigidbody.AddForce(gravity, ForceMode2D.Force);
+    //}
 
     private void OnWeaponChanged(WeaponInfo weaponInfo)
     {

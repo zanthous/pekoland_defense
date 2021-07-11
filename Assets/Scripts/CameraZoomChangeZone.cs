@@ -12,7 +12,8 @@ public class CameraZoomChangeZone : MonoBehaviour
     {
         if(collision.transform.CompareTag("Player"))
         {
-            CameraFollow.ChangeCameraZoom.Invoke(zoomLevel);
+            CameraFollow.ChangeCameraZoom?.Invoke(zoomLevel);
+            CameraFollowNew.ChangeCameraZoom?.Invoke(zoomLevel);
         }
     }
 }

@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public enum CameraZoomLevel
-{
-	normal,
-	far,
-	farther,
-	farthest
-}
+//public enum CameraZoomLevel
+//{
+//	normal,
+//	far,
+//	farther,
+//	farthest
+//}
 
 public class CameraFollow : MonoBehaviour
 {
