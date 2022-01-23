@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+//https://github.com/SebLague/2DPlatformer-Tutorial
+//TODO.... It seems that no rigidbody method has its own issues.. Works well as is but performance appears to take a hit unless objects are rigidbodied
+//https://forum.unity.com/threads/auto-sync-transforms.603568/
+//Adding static rigidbodies to everything "If you absolutely must have them Static and must move them then add a Rigidbody2D and set the body-type to Static."
 public class Controller2D : RaycastController
 {
 	float maxClimbAngle = 65;
