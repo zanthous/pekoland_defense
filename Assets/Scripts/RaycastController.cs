@@ -28,6 +28,7 @@ public class RaycastController : MonoBehaviour
 
 	public void UpdateRaycastOrigins()
 	{
+		//Physics2D.SyncTransforms
 		Bounds bounds = collider.bounds;
 		bounds.Expand(skinWidth * -2);
 

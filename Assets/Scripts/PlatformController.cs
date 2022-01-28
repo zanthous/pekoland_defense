@@ -23,13 +23,14 @@ public class PlatformController : RaycastController
 	float nextMoveTime;
 
     [SerializeField] private bool animated = false;
-	[SerializeField] private BakedAnimationClip clip;
+	[SerializeField] private BakedAnimationClip bakedClip;
+	private Beatrate.AnimationBaker.AnimationCurve3 positionCurve;
 
 	[SerializeField] private GameObject animatedPlatform;
 
 	private Vector2 platformPosition;
 
-	private Animator animator;
+	[SerializeField] private Animator animator;
 	private float animStartTime = 0.0f;
 	private float previousTime = 0.0f;
 
@@ -42,11 +43,13 @@ public class PlatformController : RaycastController
 
 	private Rigidbody2D rb;
 
-    public override void Start()
+	private Vector3 nextFramePos = new Vector3();
+	private Vector3 startPos;
+
+	public override void Start()
 	{
 		base.Start();
 		previousPosition = transform.position;
-		animator = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody2D>();
 
 		globalWaypoints = new Vector3[localWaypoints.Length];
@@ -56,8 +59,8 @@ public class PlatformController : RaycastController
 		}
 		animStartTime = Time.time;
 
-		var bindings = clip?.TransformBindings;
-		Beatrate.AnimationBaker.AnimationCurve3 positionCurve;
+		var bindings = bakedClip?.TransformBindings;
+		
 		for(int i = 0; i < bindings?.Count; i++)
 		{
 			if(bindings[i].Path == animatedPlatform.name)
@@ -66,22 +69,26 @@ public class PlatformController : RaycastController
 				break;
 			}
 		}
+		startPos = transform.position;
 	}
 
 	void FixedUpdate()
 	{
 		UpdateRaycastOrigins();
-
 		if(!animated)
 		{
 			velocity = CalculatePlatformMovement();
 			CalculatePassengerMovement(velocity);
 		}
 		else
-        {
-			//Debug.Log(velocity);
-			//platformPosition = 		
-			velocity = ( (Vector2)transform.position - previousPosition);
+		{
+			//If the animation speed is not 1, this needs to be updated to account for it
+			var currentState = animator.GetCurrentAnimatorStateInfo(0);
+			var normalizedFrame = Time.fixedDeltaTime / currentState.length;
+			//positionCurve.Evaluate is not in normalized time
+			nextFramePos = positionCurve.Evaluate((currentState.normalizedTime % 1.0f) * currentState.length + Time.fixedDeltaTime);
+			Vector3 currentFramePos = positionCurve.Evaluate(currentState.normalizedTime % 1.0f);
+			velocity = ( (Vector2)nextFramePos - (Vector2)currentFramePos );
 			CalculatePassengerMovement(velocity);
 		}
 
@@ -90,6 +97,10 @@ public class PlatformController : RaycastController
         {
 			rb.position = rb.position + velocity;
 		}
+		else
+        {
+			rb.position = (Vector2)startPos + (Vector2)nextFramePos;
+        }
 		MovePassengers(false);
 
 		previousPosition = transform.position;
@@ -162,7 +173,6 @@ public class PlatformController : RaycastController
 		float directionX = Mathf.Sign(velocity.x);
 		float directionY = Mathf.Sign(velocity.y);
 
-		// Vertically moving platform - player under?
 		if(velocity.y != 0)
 		{
 			float rayLength = Mathf.Abs(velocity.y) + skinWidth;
@@ -172,8 +182,8 @@ public class PlatformController : RaycastController
 				Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
 				rayOrigin += Vector2.right * (verticalRaySpacing * i);
 				RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, passengerMask);
-				Debug.DrawRay(rayOrigin, Vector2.up * directionY, Color.blue);
-				if(hit)
+				Debug.DrawRay(rayOrigin, Vector2.up * rayLength, Color.blue);
+				if(hit && hit.distance != 0)
 				{
 					if(!movedPassengers.Contains(hit.transform))
 					{
@@ -221,7 +231,7 @@ public class PlatformController : RaycastController
 			{
 				Vector2 rayOrigin = raycastOrigins.topLeft + Vector2.right * (verticalRaySpacing * i);
 				RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
-				Debug.DrawRay(rayOrigin, Vector2.up * directionY, Color.magenta);
+				Debug.DrawRay(rayOrigin, Vector2.up * rayLength, Color.magenta);
 				if(hit)
 				{
 					if(!movedPassengers.Contains(hit.transform))
