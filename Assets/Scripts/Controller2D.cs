@@ -14,11 +14,13 @@ public class Controller2D : RaycastController
 	public bool Crouch = false;
 	public bool FacingRight = true;
 	private PlayerAnimationController animationController;
+	private Rigidbody2D rb;
 
 	public override void Start()
 	{
 		animationController = GetComponent<PlayerAnimationController>();
 		base.Start();
+		rb = GetComponent<Rigidbody2D>();
 	}
 
 	public void Move(Vector2 velocity, bool standingOnPlatform = false)
@@ -42,7 +44,7 @@ public class Controller2D : RaycastController
 			VerticalCollisions(ref velocity);
 		}
 
-		transform.Translate(velocity);
+		rb.position = rb.position + velocity;
 
 		if(standingOnPlatform)
 		{

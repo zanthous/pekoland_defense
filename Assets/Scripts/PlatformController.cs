@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Beatrate;
+using Beatrate.AnimationBaker;
 
 public class PlatformController : RaycastController
 {
@@ -21,9 +23,11 @@ public class PlatformController : RaycastController
 	float nextMoveTime;
 
     [SerializeField] private bool animated = false;
-	[SerializeField] private AnimationClip clip;
-	[SerializeField] private AnimationCurve curve;
+	[SerializeField] private BakedAnimationClip clip;
+
 	[SerializeField] private GameObject animatedPlatform;
+
+	private Vector2 platformPosition;
 
 	private Animator animator;
 	private float animStartTime = 0.0f;
@@ -36,11 +40,14 @@ public class PlatformController : RaycastController
 	Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
     private bool resetPosition;
 
+	private Rigidbody2D rb;
+
     public override void Start()
 	{
 		base.Start();
 		previousPosition = transform.position;
 		animator = GetComponent<Animator>();
+		rb = GetComponent<Rigidbody2D>();
 
 		globalWaypoints = new Vector3[localWaypoints.Length];
 		for(int i = 0; i < localWaypoints.Length; i++)
@@ -48,9 +55,20 @@ public class PlatformController : RaycastController
 			globalWaypoints[i] = localWaypoints[i] + transform.position;
 		}
 		animStartTime = Time.time;
+
+		var bindings = clip?.TransformBindings;
+		Beatrate.AnimationBaker.AnimationCurve3 positionCurve;
+		for(int i = 0; i < bindings?.Count; i++)
+		{
+			if(bindings[i].Path == animatedPlatform.name)
+			{
+				positionCurve = bindings[i].Curve.PositionCurve; 
+				break;
+			}
+		}
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		UpdateRaycastOrigins();
 
@@ -62,16 +80,15 @@ public class PlatformController : RaycastController
 		else
         {
 			//Debug.Log(velocity);
-			clip.SampleAnimation(animatedPlatform, Time.time - animStartTime);
-
-			velocity = ( - previousPosition);
+			//platformPosition = 		
+			velocity = ( (Vector2)transform.position - previousPosition);
 			CalculatePassengerMovement(velocity);
 		}
 
 		MovePassengers(true);
 		if(!animated)
         {
-			transform.Translate(velocity);
+			rb.position = rb.position + velocity;
 		}
 		MovePassengers(false);
 
@@ -95,7 +112,7 @@ public class PlatformController : RaycastController
 		fromWaypointIndex %= globalWaypoints.Length;
 		int toWaypointIndex = (fromWaypointIndex + 1) % globalWaypoints.Length;
 		float distanceBetweenWaypoints = Vector2.Distance(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex]);
-		percentBetweenWaypoints += Time.deltaTime * speed / distanceBetweenWaypoints;
+		percentBetweenWaypoints += Time.fixedDeltaTime * speed / distanceBetweenWaypoints;
 		percentBetweenWaypoints = Mathf.Clamp01(percentBetweenWaypoints);
 		float easedPercentBetweenWaypoints = Ease(percentBetweenWaypoints);
 

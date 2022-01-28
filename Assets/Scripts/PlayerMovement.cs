@@ -48,6 +48,11 @@ public class PlayerMovement : MonoBehaviour
 
     private float attackTimer = float.MaxValue;
     private float aimThreshold = 0.1f; //How far in the y direction should you have to press to aim down/up?
+
+    private float lastJumpPressTime = 0.0f;
+    private bool autoJump = false;
+    private float autoJumpTime = 0.1f;
+
     //private Vector2 gravity;
     //private float gravityScale = 3.0f;
     private float gravity = -20.0f;
@@ -81,7 +86,20 @@ public class PlayerMovement : MonoBehaviour
         ChangeHealth -= OnChangeHealth;
     }
 
-    void Update()
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            autoJump = true;
+            lastJumpPressTime = Time.time;
+        }
+        if(Time.time > lastJumpPressTime + autoJumpTime)
+        {
+            autoJump = false;
+        }
+    }
+
+    void FixedUpdate()
     {
         if(controller.collisions.above || controller.collisions.below)
         {
@@ -90,13 +108,15 @@ public class PlayerMovement : MonoBehaviour
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
         verticalMove = Input.GetAxisRaw("Vertical");
-        jump = Input.GetKey(KeyCode.Space);
+        //jump = Input.GetKeyDown(KeyCode.Space);
 
-        if(jump && controller.collisions.below)
+        if((autoJump && controller.collisions.below))
         {
             velocity.y = jumpVelocity;
+            autoJump = false;
+            animationController.Jumping = true;
         }
-        else if( !jump && controller.collisions.below)
+        else if(controller.collisions.below)
         {
             animationController.Jumping = false;
         }
@@ -104,17 +124,16 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         velocity.x = horizontalMove * moveSpeed;
 
-        attackTimer += Time.deltaTime;
+        attackTimer += Time.fixedDeltaTime;
         
-        controller.Move(velocity * Time.deltaTime);
+        controller.Move(velocity * Time.fixedDeltaTime);
         
         HandleAttack();
 
         animationController.Speed = Mathf.Abs(horizontalMove);
 
-        if(jump)
+        if(autoJump)
         {
-            animationController.Jumping = true;
         }
     }
 
@@ -177,11 +196,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
+    //void FixedUpdate()
+    //{
         //AddGravity();
         //controller.Move(horizontalMove * Time.fixedDeltaTime * moveSpeed, jump);
-    }
+    //}
 
     //https://gamedev.stackexchange.com/questions/146738/how-to-disable-gravity-for-a-rigidbody-moving-on-a-slope/169102#169102
     //private void AddGravity()
