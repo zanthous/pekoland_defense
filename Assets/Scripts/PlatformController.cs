@@ -79,6 +79,7 @@ public class PlatformController : RaycastController
 		{
 			velocity = CalculatePlatformMovement();
 			CalculatePassengerMovement(velocity);
+			Debug.Log("not " + velocity.y);
 		}
 		else
 		{
@@ -87,9 +88,10 @@ public class PlatformController : RaycastController
 			var normalizedFrame = Time.fixedDeltaTime / currentState.length;
 			//positionCurve.Evaluate is not in normalized time
 			nextFramePos = positionCurve.Evaluate((currentState.normalizedTime % 1.0f) * currentState.length + Time.fixedDeltaTime);
-			Vector3 currentFramePos = positionCurve.Evaluate(currentState.normalizedTime % 1.0f);
+			Vector3 currentFramePos = positionCurve.Evaluate((currentState.normalizedTime % 1.0f) * currentState.length);
 			velocity = ( (Vector2)nextFramePos - (Vector2)currentFramePos );
 			CalculatePassengerMovement(velocity);
+			Debug.Log("animated " + velocity.y);
 		}
 
 		MovePassengers(true);
@@ -99,7 +101,9 @@ public class PlatformController : RaycastController
 		}
 		else
         {
-			rb.position = (Vector2)startPos + (Vector2)nextFramePos;
+			var result = (Vector2) startPos + (Vector2) nextFramePos;
+			Debug.Log(result);
+			rb.position = result;
         }
 		MovePassengers(false);
 
