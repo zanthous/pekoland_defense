@@ -10,9 +10,9 @@ public enum CameraZoomLevel
 	farthest
 }
 
-public class CameraFollowNew : MonoBehaviour
+public class Camera : MonoBehaviour
 {
-	public PlayerMovement target;
+	public Player target;
 	public float verticalOffset;
 	public float lookAheadDstX;
 	public float lookSmoothTimeX;
@@ -33,14 +33,25 @@ public class CameraFollowNew : MonoBehaviour
 	public static Action<CameraZoomLevel> ChangeCameraZoom;
 	[SerializeField] private float zoomChangeDuration = 3.0f;
 	private bool cameraZoomTransition = false;
-	private new Camera camera;
+	private new UnityEngine.Camera camera;
+	public static float height = 0;
+	public static float width = 0;
+	public static float x = 0;
+	public static float y = 0;
 
-	void Start()
+
+	private void Awake()
+    {
+        camera = GetComponent<UnityEngine.Camera>();
+		height = 2f * camera.orthographicSize;
+		width = height * camera.aspect;
+	}
+
+    void Start()
 	{
 		targetCollider = target.GetComponent<BoxCollider2D>();
 		focusArea = new FocusArea(targetCollider.bounds, focusAreaSize);
 		ChangeCameraZoom += OnChangeCameraZoom;
-		camera = GetComponent<Camera>();
 	}
 
 	void LateUpdate()
@@ -73,6 +84,8 @@ public class CameraFollowNew : MonoBehaviour
 		focusPosition.y = Mathf.SmoothDamp(transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
 		focusPosition += Vector2.right * currentLookAheadX;
 		transform.position = (Vector3) focusPosition + Vector3.forward * -10;
+		x = transform.position.x;
+		y = transform.position.y;
 	}
 
 
@@ -110,6 +123,9 @@ public class CameraFollowNew : MonoBehaviour
 			timer += Time.deltaTime;
 
 			camera.orthographicSize = Mathf.Lerp(initialSize, (float) newZoomLevel, (timer / zoomChangeDuration));
+
+			height = 2f * camera.orthographicSize;
+			width = height * camera.aspect;
 
 			yield return null;
 		}

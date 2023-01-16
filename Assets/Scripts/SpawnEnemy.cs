@@ -14,14 +14,14 @@ public class SpawnEnemy : MonoBehaviour
 
     private float cooldown = 0f;
     private GameObject player;
-    private Camera camera;
+    private UnityEngine.Camera camera;
 
     // Start is called before the first frame update
     void Start()
     {
         // get player and main camera
         player = GameObject.FindGameObjectWithTag("Player");
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UnityEngine.Camera>();
     }
 
     // Update is called once per frame
@@ -39,8 +39,8 @@ public class SpawnEnemy : MonoBehaviour
         // if spawn, spawn one 
         if (check < spawnRate) {
             Vector2 cameraPos = camera.transform.position;
-            float rangeY = Camera.main.orthographicSize;
-            float rangeX = rangeY * Camera.main.aspect;
+            float rangeY = UnityEngine.Camera.main.orthographicSize;
+            float rangeX = rangeY * UnityEngine.Camera.main.aspect;
 
             Vector2 playerPos = player.transform.position;
 

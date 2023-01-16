@@ -4,7 +4,7 @@ using UnityEngine;
 
 //https://www.youtube.com/watch?v=nBkiSJ5z-hE
 //decided to go the code route for simplicity
-public class PlayerAnimationController : MonoBehaviour
+public class PlayerAnimationController : MonoBehaviour, IAnimationController
 {
     //Use hashes to select animations faster apparently
     private static readonly int AirAttackLeft = Animator.StringToHash("Pekora_Air_Attack_Left");
@@ -22,12 +22,12 @@ public class PlayerAnimationController : MonoBehaviour
     private static readonly int RunLeft = Animator.StringToHash("Pekora_Run_Left");
     private static readonly int RunRight = Animator.StringToHash("Pekora_Run_Right");
 
-    //These animations should transition seemlessly, continuing from where the previous left off
-    private Dictionary<int, List<int>> smoothTransitions = new Dictionary<int, List<int>>();
+    //These animations should transition seamlessly, continuing from where the previous left off
+    private Dictionary<int, List<int>> smoothTransitions = new();
     private Animator animator;
     private WeaponInfo currentWeaponInfo;
     private Coroutine stopAttackCoroutine;
-    private PlayerMovement playerMovement;
+    private Player playerMovement;
     private AttackOrigin attackOrigin;
     private bool attackStarting = false;
     private float lastAttack = 0.0f;
@@ -40,12 +40,15 @@ public class PlayerAnimationController : MonoBehaviour
     public bool FacingRight { get; set; } = true;
     public bool Jumping { get; set; } = false;
     public bool Attacking { get; set; } = false;
+    public bool HitStun { get; set; } = false;
+    public bool hitDirection { get; set; } 
+
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        playerMovement = GetComponent<PlayerMovement>();
+        playerMovement = GetComponent<Player>();
 
         smoothTransitions.Add(JumpLeft, new List<int>() { JumpRight });
         smoothTransitions.Add(JumpRight, new List<int>() { JumpLeft });
@@ -56,8 +59,8 @@ public class PlayerAnimationController : MonoBehaviour
         smoothTransitions.Add(AttackRight, new List<int>() { AirAttackRight, AttackLeft });
         smoothTransitions.Add(AttackLeft, new List<int>() { AirAttackLeft, AttackRight });
 
-        PlayerMovement.AttackEvent += OnAttack;
-        PlayerMovement.WeaponChangedEvent += OnWeaponChanged;
+        Player.AttackEvent += OnAttack;
+        Player.WeaponChangedEvent += OnWeaponChanged;
     }
 
     private void OnWeaponChanged(WeaponInfo weaponInfo)
@@ -74,60 +77,74 @@ public class PlayerAnimationController : MonoBehaviour
 
     void Update()
     {
-        if(Speed > 0.1f && !Jumping) //on ground running
+        if(HitStun)
         {
-            if(Attacking)
+            //im reusing this as the hurt animation for now
+            if(FacingRight)
             {
-                if(FacingRight)
-                {
-                    ChangeAnimationState(AttackRight);
-                }
-                else //facing left
-                {
-                    ChangeAnimationState(AttackLeft);
-                }
+                ChangeAnimationState(JumpRight, 0.5f);
             }
-            else
+            else //facing left
             {
-                if(FacingRight)
+                ChangeAnimationState(JumpLeft, 0.5f);
+            }
+        }
+        else
+        { 
+            if(Speed > 0.1f && !Jumping) //on ground running
+            {
+                if(Attacking)
                 {
-                    ChangeAnimationState(RunRight);
+                    if(FacingRight)
+                    {
+                        ChangeAnimationState(AttackRight);
+                    }
+                    else //facing left
+                    {
+                        ChangeAnimationState(AttackLeft);
+                    }
                 }
                 else
                 {
-                    ChangeAnimationState(RunLeft);
+                    if(FacingRight)
+                    {
+                        ChangeAnimationState(RunRight);
+                    }
+                    else
+                    {
+                        ChangeAnimationState(RunLeft);
+                    }
                 }
             }
-        }
-        else if(Jumping) //in air animations
-        { //todo check velocity
-            if(Attacking)
-            {
-                if(FacingRight)
+            else if(Jumping) //in air animations
+            { //todo check velocity
+                if(Attacking)
                 {
-                    ChangeAnimationState(AirAttackRight);
+                    if(FacingRight)
+                    {
+                        ChangeAnimationState(AirAttackRight);
+                    }
+                    else //facing left
+                    {
+                        ChangeAnimationState(AirAttackLeft);
+                    }
                 }
-                else //facing left
+                else //not attacking
                 {
-                    ChangeAnimationState(AirAttackLeft);
+                    //TODO replace
+                    //start at falling animation if character is falling (halfway through jump)
+                    float delay = playerMovement.Velocity.y < 0.0f ? 0.5f : 0.0f;
+                    if(FacingRight)
+                    {
+                        ChangeAnimationState(JumpRight, delay);
+                    }
+                    else //facing left
+                    {
+                        ChangeAnimationState(JumpLeft, delay);
+                    }
                 }
             }
-            else //not attacking
-            {
-                //TODO replace
-                //start at falling animation if character is falling (halfway through jump)
-                float delay = playerMovement.Velocity.y < 0.0f ? 0.5f : 0.0f;
-                if(FacingRight)
-                {
-                    ChangeAnimationState(JumpRight, delay);
-                }
-                else //facing left
-                {
-                    ChangeAnimationState(JumpLeft, delay);
-                }
-            }
-        }
-        else //not jumping, and not running on the ground
+            else //not jumping, and not running on the ground
         {
             if(Attacking)
             {
@@ -151,6 +168,7 @@ public class PlayerAnimationController : MonoBehaviour
                     ChangeAnimationState(IdleLeft);
                 }
             }
+        }
         }
 
         if(attackStarting) //essentially set a timer to turn off attacking when the animation finishes

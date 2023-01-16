@@ -2,23 +2,26 @@ using UnityEngine;
 using System.Collections;
 
 //https://github.com/SebLague/2DPlatformer-Tutorial
-//TODO.... It seems that no rigidbody method has its own issues.. Works well as is but performance appears to take a hit unless objects are rigidbodied
+//
 //https://forum.unity.com/threads/auto-sync-transforms.603568/
 //Adding static rigidbodies to everything "If you absolutely must have them Static and must move them then add a Rigidbody2D and set the body-type to Static."
+
 public class Controller2D : RaycastController
 {
 	float maxClimbAngle = 65;
 	float maxDescendAngle = 65;
 
 	public CollisionInfo collisions;
+	//public CollisionInfo allCollisions;
 	public bool Crouch = false;
 	public bool FacingRight = true;
-	private PlayerAnimationController animationController;
+	public bool HitStunned = false;
+	private IAnimationController animationController;
 	private Rigidbody2D rb;
 
 	public override void Start()
 	{
-		animationController = GetComponent<PlayerAnimationController>();
+		animationController = GetComponent<IAnimationController>();
 		base.Start();
 		rb = GetComponent<Rigidbody2D>();
 	}
@@ -35,8 +38,11 @@ public class Controller2D : RaycastController
 		}
 		if(velocity.x != 0)
 		{
-			FacingRight = (velocity.x > 0);
-			animationController.FacingRight = FacingRight;
+			FacingRight = (velocity.x > 0); 
+			if(!HitStunned)
+            {
+				animationController.FacingRight = FacingRight;
+			}
 			HorizontalCollisions(ref velocity);
 		}
 		if(velocity.y != 0)
@@ -44,7 +50,7 @@ public class Controller2D : RaycastController
 			VerticalCollisions(ref velocity);
 		}
 
-		rb.position = rb.position + velocity;
+		rb.MovePosition(rb.position + velocity);
 
 		if(standingOnPlatform)
 		{

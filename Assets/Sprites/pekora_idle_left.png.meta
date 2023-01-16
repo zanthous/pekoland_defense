@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -69,11 +70,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -163,7 +164,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pekora_idle_left_0
+      name: idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -177,14 +178,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 90e6c5ab1548e1200800000000000000
-      internalID: 152704923931012617
+      spriteID: 5d55ed543f8490a70800000000000000
+      internalID: 8793639957104055765
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_1
+      name: idle_1
       rect:
         serializedVersion: 2
         x: 36
@@ -198,14 +199,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b55c01a965a332870800000000000000
-      internalID: 8656827052362614107
+      spriteID: 103de827293c17450800000000000000
+      internalID: 6084859605308855041
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_2
+      name: idle_2
       rect:
         serializedVersion: 2
         x: 72
@@ -219,14 +220,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79aad4764f6eed470800000000000000
-      internalID: 8421422290608958103
+      spriteID: c30c6f3402f456770800000000000000
+      internalID: 8603369663158992956
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_3
+      name: idle_3
       rect:
         serializedVersion: 2
         x: 108
@@ -240,14 +241,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 41ef721ec43dbb2c0800000000000000
-      internalID: -4414702682558169580
+      spriteID: 75a90b6cc3d280ea0800000000000000
+      internalID: -5906421172241655209
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_4
+      name: idle_4
       rect:
         serializedVersion: 2
         x: 144
@@ -261,14 +262,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 471832daff7012f10800000000000000
-      internalID: 2243082884110057844
+      spriteID: 9c70460ff3c2a2f40800000000000000
+      internalID: 5704420531145803721
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_5
+      name: idle_5
       rect:
         serializedVersion: 2
         x: 180
@@ -282,14 +283,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b6a203cd1d61e880800000000000000
-      internalID: -8583459440198244685
+      spriteID: 6a21d340f8100fdf0800000000000000
+      internalID: -148617073940163930
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_6
+      name: idle_6
       rect:
         serializedVersion: 2
         x: 216
@@ -303,14 +304,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cfc4b29e0ebe80cd0800000000000000
-      internalID: -2591562234334589700
+      spriteID: 9e7a79719cfe2a140800000000000000
+      internalID: 4729606205655721961
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_7
+      name: idle_7
       rect:
         serializedVersion: 2
         x: 252
@@ -324,14 +325,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1bd4015077a940a30800000000000000
-      internalID: 4180636190083403185
+      spriteID: a56cdbd6c2ac833e0800000000000000
+      internalID: -2073685336235588006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_8
+      name: idle_8
       rect:
         serializedVersion: 2
         x: 288
@@ -345,14 +346,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54bc859fb39b4cb10800000000000000
-      internalID: 2000927801696897861
+      spriteID: 30a057a02b0dd1700800000000000000
+      internalID: 512795395688303107
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_9
+      name: idle_9
       rect:
         serializedVersion: 2
         x: 324
@@ -366,14 +367,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 75c67963227c02500800000000000000
-      internalID: 369514119203089495
+      spriteID: 72a31e48e77f7ae40800000000000000
+      internalID: 5667770778836351527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_10
+      name: idle_10
       rect:
         serializedVersion: 2
         x: 360
@@ -387,14 +388,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9b56c0cc337a5cf60800000000000000
-      internalID: 8054027349530535353
+      spriteID: e4ccd1890efa47be0800000000000000
+      internalID: -1480364998338425778
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekora_idle_left_11
+      name: idle_11
       rect:
         serializedVersion: 2
         x: 396
@@ -408,8 +409,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 245e502ac1d1bba00800000000000000
-      internalID: 773243769838757186
+      spriteID: ce56687d01c0f5df0800000000000000
+      internalID: -189419392851352084
       vertices: []
       indices: 
       edges: []
@@ -417,13 +418,26 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: fd84c6e023b8d324ea074a027f05cc8c
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      idle_4: 5704420531145803721
+      idle_11: -189419392851352084
+      idle_3: -5906421172241655209
+      idle_0: 8793639957104055765
+      idle_1: 6084859605308855041
+      idle_8: 512795395688303107
+      idle_6: 4729606205655721961
+      idle_7: -2073685336235588006
+      idle_2: 8603369663158992956
+      idle_5: -148617073940163930
+      idle_9: 5667770778836351527
+      idle_10: -1480364998338425778
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -93,8 +94,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -616,6 +617,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      slime_full_strip20 1_11: -8036666813693095752
+      slime_full_strip20 1_3: 1797879656210886623
+      slime_full_strip20 1_15: -5717002061412169136
+      slime_full_strip20 1_17: 4459863678829694843
+      slime_full_strip20 1_18: -1202755688793495114
+      slime_full_strip20 1_19: 8891520351236873201
+      slime_full_strip20 1_13: -8355854320510246004
+      slime_full_strip20 1_12: -3052400043831360773
+      slime_full_strip20 1_0: 7145080212453873207
+      slime_full_strip20 1_8: -8166983809622169334
+      slime_full_strip20 1_10: -7923134904250879215
+      slime_full_strip20 1_5: 7199516089747130602
+      slime_full_strip20 1_9: -1903731471205622827
+      slime_full_strip20 1_16: 1676342683575160211
+      slime_full_strip20 1_1: -2786576956524511943
+      slime_full_strip20 1_2: 2114836160075989238
+      slime_full_strip20 1_6: -4025945031873178359
+      slime_full_strip20 1_7: 5576750306983198986
+      slime_full_strip20 1_4: 7328064949369870824
+      slime_full_strip20 1_14: -5852587618976752873
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

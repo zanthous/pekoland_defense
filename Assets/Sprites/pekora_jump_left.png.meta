@@ -66,6 +66,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -75,8 +76,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -472,6 +473,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      pekora_jump_left_10: -8675214759184027753
+      pekora_jump_left_13: -1880703817533318895
+      pekora_jump_left_1: 4791217399358823947
+      pekora_jump_left_2: 3691797273594468972
+      pekora_jump_left_9: -2170562489599147575
+      pekora_jump_left_8: -12505593951660401
+      pekora_jump_left_6: 5357698374412394542
+      pekora_jump_left_7: -5923921913905722761
+      pekora_jump_left_12: 2779711809043153869
+      pekora_jump_left_11: 8038629726004605319
+      pekora_jump_left_4: 7988159148843333541
+      pekora_jump_left_0: 6280886810607659669
+      pekora_jump_left_5: 5748120918488630936
+      pekora_jump_left_3: -5350773181171510195
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

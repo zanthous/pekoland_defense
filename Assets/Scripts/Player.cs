@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEngine.InputSystem.InputAction;
 
 public enum AttackOrigin
 {
@@ -13,7 +14,8 @@ public enum AttackOrigin
 
 //[RequireComponent(typeof(Controller2D))]
 [RequireComponent(typeof(PlayerAnimationController))]
-public class PlayerMovement : MonoBehaviour
+
+public class Player : MonoBehaviour
 {
     public static Action<WeaponInfo> WeaponChangedEvent;
     public static Action<AttackOrigin> AttackEvent;
@@ -41,22 +43,24 @@ public class PlayerMovement : MonoBehaviour
     private float verticalMove = 0.0f;
 
     private bool jump = false;
+
     [SerializeField] private float timeToJumpApex = .4f;
     [SerializeField] private float jumpHeight = 3.5f;
 
     private float jumpVelocity;
 
     private float attackTimer = float.MaxValue;
-    private float aimThreshold = 0.1f; //How far in the y direction should you have to press to aim down/up?
+    private float aimThreshold = 0.5f; //How far in the y direction should you have to press to aim down/up?
 
     private float lastJumpPressTime = 0.0f;
-    private bool autoJump = false;
-    private float autoJumpTime = 0.1f;
+    private bool bufferJump = false;
+    private float jumpBufferTime = 0.1f;
 
-    //private Vector2 gravity;
-    //private float gravityScale = 3.0f;
     private float gravity = -20.0f;
     private Vector2 velocity;
+    new Rigidbody2D rigidbody;
+    float crouchThreshold = -.5f;
+
     public Vector2 Velocity
     {
         get { return velocity; }
@@ -66,18 +70,36 @@ public class PlayerMovement : MonoBehaviour
     private Transform currentMovingPlatform;
     private const int MaxHealth = 3;
 
+    private Vector2 tookDamageDirection; //for now only doing left or right but might do more directions later
+    [SerializeField] private AnimationCurve hitStunVelocityCurve;
+    private float tookDamageTimer = 0;
+    private float hitStunDuration = 0.5f;
+    private float invincibilityTime = 2.0f;
+    private bool invincible = false;
+    private bool hitStunned = false;
+
+    private AttackData lastAttackData;
+    private float damageColorCycleSpeed = 12.0f;
+    private Material material;
+
+    private LayerMask defaultMask;
+    [SerializeField] private LayerMask invincibilityMask; //What to collide with while invincible after taking damage
+
     // Start is called before the first frame update
     void Start()
     {
         //controller = GetComponent<CharacterController2D>();
         animationController = GetComponent<PlayerAnimationController>();
         controller = GetComponent<Controller2D>();
-        
+        material = GetComponent<SpriteRenderer>().material;
+        rigidbody = GetComponent<Rigidbody2D>();
+
         AttackEvent += OnAttack;
-        ChangeHealth += OnChangeHealth;
+        ChangeHealth += OnChangeHealth; 
 
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        defaultMask = controller.collisionMask;
     }
 
     //probably entirely unecessary
@@ -88,15 +110,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            autoJump = true;
-            lastJumpPressTime = Time.time;
-        }
-        if(Time.time > lastJumpPressTime + autoJumpTime)
-        {
-            autoJump = false;
-        }
+      
+        //if(Input.GetKey(KeyCode.S))
+        //{
+        //    controller.Crouch = true;
+        //}
+        //else
+        //{
+        //    controller.Crouch = false;
+        //}
     }
 
     void FixedUpdate()
@@ -106,41 +128,114 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = 0;
         }
 
-        horizontalMove = Input.GetAxisRaw("Horizontal");
-        verticalMove = Input.GetAxisRaw("Vertical");
-        //jump = Input.GetKeyDown(KeyCode.Space);
+        if(tookDamageTimer > 0)
+        {
+            material.SetFloat("_FlashAmount", Mathf.Abs(Mathf.Cos((invincibilityTime - tookDamageTimer) * damageColorCycleSpeed)));
+        }
+        if(invincibilityTime - tookDamageTimer > hitStunDuration)
+        {
+            //todo clean too tired
+            animationController.HitStun = false;
+            controller.HitStunned = false;
+            hitStunned = false;
 
-        if((autoJump && controller.collisions.below))
+            if(tookDamageTimer <= 0 && invincible == true)
+            {
+                invincible = false;
+                material.SetFloat("_FlashAmount", 0);
+                controller.collisionMask = defaultMask;
+            }
+        }
+
+        if(hitStunned)
+        {
+            horizontalMove = 0.0f;
+            verticalMove = 0.0f;
+        }
+
+        if((bufferJump && controller.collisions.below)) //Jump queued and grounded? Jump
         {
             velocity.y = jumpVelocity;
-            autoJump = false;
+            bufferJump = false;
             animationController.Jumping = true;
         }
-        else if(controller.collisions.below)
+        else if(controller.collisions.below) //Land
         {
             animationController.Jumping = false;
         }
 
-        velocity.y += gravity * Time.deltaTime;
-        velocity.x = horizontalMove * moveSpeed;
+        velocity.y += gravity * Time.fixedDeltaTime;
 
+        if(tookDamageTimer > invincibilityTime - hitStunDuration) //if hitstunned
+        {
+            velocity.x = hitStunVelocityCurve.Evaluate((hitStunVelocityCurve.length / hitStunDuration) //scale to duration of the curve (it's 1 second duration)
+                * (invincibilityTime - tookDamageTimer)) //time elapsed since hit)
+                * lastAttackData.KnockbackSpeed 
+                * -tookDamageDirection.x; 
+        }
+        else
+        {
+            velocity.x = horizontalMove * moveSpeed;
+        }
+        
         attackTimer += Time.fixedDeltaTime;
+        tookDamageTimer -= Time.fixedDeltaTime;
         
         controller.Move(velocity * Time.fixedDeltaTime);
-        
-        HandleAttack();
 
         animationController.Speed = Mathf.Abs(horizontalMove);
 
-        if(autoJump)
+        if(Time.time > lastJumpPressTime + jumpBufferTime)
         {
+            bufferJump = false;
         }
     }
 
-    private void HandleAttack()
-    {
-        if(attackTimer > currentWeaponInfo.attackCooldown && Input.GetButtonDown("Fire1"))
-        {
+    public void Move(CallbackContext context)
+	{
+        horizontalMove = context.ReadValue<Vector2>().x;
+        verticalMove = context.ReadValue<Vector2>().y;
+        //use aimthreshold so the player can either move or throw a dagger upward
+        //but not both
+        if(Mathf.Abs(horizontalMove) > aimThreshold) 
+		{
+            horizontalMove = Mathf.Sign(horizontalMove);
+		}
+        else
+		{
+            horizontalMove = 0.0f;
+		}
+
+        //less than aimtrheshold horizontal move means that the player is not moving
+        //this is to prevent walking while crouching
+        if(!controller.Crouch && controller.collisions.below && verticalMove < crouchThreshold && horizontalMove <= aimThreshold)
+		{
+            controller.Crouch = true;
+            transform.localScale = new Vector3(1,.5f);
+            transform.position = new Vector2(rigidbody.position.x, rigidbody.position.y - .5f);
+            //rigidbody.MovePosition(new Vector2(rigidbody.position.x, rigidbody.position.y - .5f));
+            
+		}
+        else if (controller.Crouch && verticalMove > crouchThreshold)
+		{
+            controller.Crouch = false;
+            transform.localScale = new Vector3(1, 1);
+            transform.position = new Vector2(rigidbody.position.x, rigidbody.position.y + .5f);
+            //rigidbody.MovePosition(new Vector2(rigidbody.position.x, rigidbody.position.y + .5f));
+        }
+    }
+
+    public void Jump(CallbackContext context)
+	{
+        bufferJump = true;
+        lastJumpPressTime = Time.time;
+    }
+
+    public void Attack(CallbackContext context)
+	{
+        if(!context.started) return;
+        if(attackTimer > currentWeaponInfo.attackCooldown)
+		{
             attackTimer = 0.0f;
 
             AttackOrigin origin = AttackOrigin.Left;
@@ -193,29 +288,7 @@ public class PlayerMovement : MonoBehaviour
 
             AttackEvent?.Invoke(origin);
         }
-    }
-
-    // Update is called once per frame
-    //void FixedUpdate()
-    //{
-        //AddGravity();
-        //controller.Move(horizontalMove * Time.fixedDeltaTime * moveSpeed, jump);
-    //}
-
-    //https://gamedev.stackexchange.com/questions/146738/how-to-disable-gravity-for-a-rigidbody-moving-on-a-slope/169102#169102
-    //private void AddGravity()
-    //{
-    //    if(controller.Grounded)
-    //    {
-    //        var hit = Physics2D.Raycast(transform.position, Vector2.down, -.4f, terrainMask);
-    //        gravity = -hit.normal * gravityScale;
-    //    }
-    //    else
-    //    {
-    //        gravity = Physics2D.gravity * gravityScale;
-    //    }
-    //    //rigidbody.AddForce(gravity, ForceMode2D.Force);
-    //}
+	}
 
     private void OnWeaponChanged(WeaponInfo weaponInfo)
     {
@@ -277,6 +350,29 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if((collider.transform.CompareTag("Enemy") || collider.transform.CompareTag("EnemyAttack")) && tookDamageTimer <= 0)
+        {
+            animationController.HitStun = true;
+            invincible = true;
+            controller.HitStunned = true;
+            controller.collisionMask = invincibilityMask;
+            lastAttackData = collider.transform.GetComponent<AttackData>();
+            tookDamageTimer = invincibilityTime;
+            if(collider.transform.position.x > transform.position.x)
+            {
+                tookDamageDirection = Vector2.right;
+            }
+            else
+            {
+                tookDamageDirection = Vector2.left;
+            }
+
+            ClearBufferedActions();
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collider)
     {
         if(collider.transform.CompareTag("MovingSurfaceCollider"))
@@ -286,13 +382,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void ClearBufferedActions()
+    {
+        bufferJump = false;
+    }
+
     void OnCollisionExit2D(Collision2D collider)
     {
         if(collider.transform.CompareTag("MovingSurfaceCollider"))
         {
             currentMovingPlatform = null;
             transform.parent = null;
-        }
-            
+        } 
     }
 }
